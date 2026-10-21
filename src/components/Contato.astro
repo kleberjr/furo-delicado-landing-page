@@ -1,0 +1,59 @@
+---
+import { formatarTelefoneBR, telHref, whatsappUrl } from "../lib/contato";
+import type { Site } from "../content/site";
+
+interface Props {
+  contato: Site["contato"];
+}
+
+const { contato } = Astro.props;
+---
+
+<section class="section section--alt" aria-labelledby="contato-titulo">
+  <div class="container contato">
+    <h2 id="contato-titulo">Contato</h2>
+    <ul role="list">
+      <li>
+        <a
+          href={whatsappUrl(contato.whatsapp, contato.mensagemWhatsapp)}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          WhatsApp {formatarTelefoneBR(contato.whatsapp)}
+        </a>
+      </li>
+      {contato.telefone && (
+        <li>
+          <a href={telHref(contato.telefone)}>Telefone {formatarTelefoneBR(contato.telefone)}</a>
+        </li>
+      )}
+      {contato.email && (
+        <li>
+          <a href={`mailto:${contato.email}`}>{contato.email}</a>
+        </li>
+      )}
+      <li>
+        <a href={contato.mapaUrl} target="_blank" rel="noopener noreferrer">
+          {contato.endereco}
+        </a>
+      </li>
+      {contato.horario.map((h) => (
+        <li>{h}</li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .contato ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .contato a {
+    display: inline-block;
+    min-height: var(--tap-min);
+    padding-block: var(--space-3);
+  }
+</style>

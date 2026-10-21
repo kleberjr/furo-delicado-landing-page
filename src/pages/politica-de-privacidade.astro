@@ -1,0 +1,69 @@
+---
+/**
+ * Modelo de Política de Privacidade para uma landing page sem formulário, cookies ou analytics.
+ * Ao adicionar formulário, analytics, mapa embutido ou cookies, atualize este texto.
+ * O cliente deve revisar o texto final com seu assessor jurídico.
+ */
+import Base from "../layouts/Base.astro";
+import { site } from "../content/site";
+
+const { nome, empresa, contato, privacidade } = site;
+const data = new Date(`${privacidade.atualizadaEm}T12:00:00Z`).toLocaleDateString("pt-BR", {
+  timeZone: "UTC",
+});
+---
+
+<Base
+  title={`Política de Privacidade | ${nome}`}
+  description={`Como ${nome} trata dados pessoais neste site, conforme a LGPD.`}
+  caminho="/politica-de-privacidade/"
+>
+  <article class="section">
+    <div class="container politica">
+      <h1>Política de Privacidade</h1>
+      <p>Última atualização: {data}.</p>
+
+      <h2>Quem é o controlador</h2>
+      <p>
+        {empresa.razaoSocial}, CNPJ {empresa.cnpj}, {contato.endereco}. Contato para assuntos de
+        privacidade: <a href={`mailto:${privacidade.email}`}>{privacidade.email}</a>.
+      </p>
+
+      <h2>Quais dados este site coleta</h2>
+      <p>
+        Este site não tem formulários, não usa cookies e não usa ferramentas de análise de
+        audiência. O provedor de hospedagem pode registrar dados técnicos de acesso (endereço IP,
+        data e hora, navegador) por segurança, com base no legítimo interesse (art. 7º, IX, da
+        LGPD), pelo prazo exigido pelo Marco Civil da Internet.
+      </p>
+
+      <h2>WhatsApp, telefone e mapa</h2>
+      <p>
+        Ao clicar em WhatsApp, telefone ou no endereço, você sai deste site. As mensagens são usadas
+        só para responder ao seu contato. WhatsApp e Google Maps têm políticas de privacidade
+        próprias.
+      </p>
+
+      <h2>Seus direitos</h2>
+      <p>
+        Você pode pedir confirmação, acesso, correção, anonimização, portabilidade ou eliminação dos
+        seus dados (art. 18 da LGPD) pelo e-mail acima, e reclamar à Autoridade Nacional de Proteção
+        de Dados (ANPD).
+      </p>
+
+      <p>
+        <a href="/">Voltar para o início</a>
+      </p>
+    </div>
+  </article>
+</Base>
+
+<style>
+  .politica {
+    max-width: 65ch;
+  }
+
+  .politica h2 {
+    margin-top: var(--space-8);
+  }
+</style>

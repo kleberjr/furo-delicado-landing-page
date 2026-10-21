@@ -1,0 +1,38 @@
+---
+interface Props {
+  razaoSocial: string;
+  cnpj: string;
+}
+
+const { razaoSocial, cnpj } = Astro.props;
+---
+
+<footer class="rodape">
+  <div class="container">
+    <p>
+      © {new Date().getFullYear()} {razaoSocial} · CNPJ {cnpj}
+    </p>
+    <p>
+      <a href="/politica-de-privacidade/">Política de Privacidade</a>
+    </p>
+  </div>
+</footer>
+
+<style>
+  .rodape {
+    padding-block: var(--space-8);
+    background: var(--color-brand);
+    color: var(--color-on-brand);
+    font-size: var(--font-size-sm);
+  }
+
+  .rodape p {
+    margin: 0;
+  }
+
+  .rodape a {
+    display: inline-block;
+    min-height: var(--tap-min);
+    padding-block: var(--space-3);
+  }
+</style>

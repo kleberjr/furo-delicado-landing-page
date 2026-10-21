@@ -1,0 +1,44 @@
+{
+  "name": "landing-kit",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Framework para landing pages de pequenos negócios locais, produzidas com Claude Code.",
+  "engines": {
+    "node": ">=22.22.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build && node scripts/check-placeholders.mjs dist",
+    "build:draft": "astro build",
+    "preview": "node scripts/serve.mjs dist",
+    "typecheck": "astro check && tsc --noEmit",
+    "lint": "eslint . && prettier --check .",
+    "format": "prettier --write .",
+    "test": "npm run test:unit && npm run test:e2e",
+    "test:unit": "playwright test --project=unit",
+    "test:e2e": "playwright test --project=e2e",
+    "screenshots": "playwright test --project=screenshots",
+    "lighthouse": "lhci autorun",
+    "images": "node scripts/images.ts"
+  },
+  "dependencies": {
+    "astro": "^7.4.1"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.11",
+    "@axe-core/playwright": "^4.14.0",
+    "@eslint/js": "^10.0.1",
+    "@lhci/cli": "^0.15.1",
+    "@playwright/test": "^1.64.1",
+    "@types/heic-convert": "^2.1.1",
+    "eslint": "^10.13.0",
+    "eslint-plugin-astro": "^1.7.0",
+    "heic-convert": "^2.1.0",
+    "prettier": "^3.9.10",
+    "prettier-plugin-astro": "^1.1.1",
+    "sharp": "^0.35.5",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.72.0"
+  }
+}

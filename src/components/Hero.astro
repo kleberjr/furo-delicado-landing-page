@@ -1,0 +1,80 @@
+---
+import { Picture } from "astro:assets";
+import { imagem } from "../lib/imagens";
+
+interface Props {
+  nome: string;
+  headline: string;
+  subheadline: string;
+  cta: string;
+  ctaHref: string;
+  redutor?: string | undefined;
+  foto: { arquivo: string; alt: string };
+}
+
+const { nome, headline, subheadline, cta, ctaHref, redutor, foto } = Astro.props;
+---
+
+<section class="hero">
+  <div class="container hero__grid">
+    <div>
+      <p class="hero__marca">{nome}</p>
+      <h1>{headline}</h1>
+      <p class="hero__sub">{subheadline}</p>
+      <a class="btn" href={ctaHref} target="_blank" rel="noopener noreferrer" data-cta="primary">
+        {cta}
+      </a>
+      {redutor && <p class="friction hero__friction">{redutor}</p>}
+    </div>
+    <Picture
+      class="hero__img"
+      src={imagem(foto.arquivo)}
+      alt={foto.alt}
+      formats={["avif", "webp"]}
+      fallbackFormat="webp"
+      widths={[480, 800, 1200]}
+      sizes="(min-width: 48rem) 50vw, 100vw"
+      loading="eager"
+      fetchpriority="high"
+    />
+  </div>
+</section>
+
+<style>
+  .hero {
+    background: var(--color-brand);
+    color: var(--color-on-brand);
+    padding-block: var(--space-6) var(--space-section);
+  }
+
+  .hero__grid {
+    display: grid;
+    gap: var(--space-8);
+    align-items: center;
+  }
+
+  .hero__marca {
+    margin-bottom: var(--space-6);
+    font-weight: var(--font-weight-bold);
+  }
+
+  .hero__sub {
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--space-6);
+  }
+
+  .hero__friction {
+    color: var(--color-on-brand);
+  }
+
+  .hero :global(.hero__img) {
+    width: 100%;
+    border-radius: var(--radius-md);
+  }
+
+  @media (width >= 48rem) {
+    .hero__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>

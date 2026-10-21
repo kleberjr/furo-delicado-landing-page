@@ -1,0 +1,43 @@
+---
+import "../styles/global.css";
+import interUrl from "../assets/fonts/inter-latin-wght-normal.woff2?url";
+import { site } from "../content/site";
+
+interface Props {
+  title: string;
+  description: string;
+  /** Caminho absoluto da página, ex.: "/". */
+  caminho: string;
+}
+
+const { title, description, caminho } = Astro.props;
+const canonical = new URL(caminho, site.seo.url).href;
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="preload" href={interUrl} as="font" type="font/woff2" crossorigin />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:site_name" content={site.nome} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+  </head>
+  <body>
+    <a class="skip-link" href="#conteudo">
+      Pular para o conteúdo
+    </a>
+    <main id="conteudo" tabindex="-1">
+      <slot />
+    </main>
+    <slot name="fim" />
+  </body>
+</html>

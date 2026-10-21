@@ -1,0 +1,22 @@
+---
+import Contato from "../components/Contato.astro";
+import Hero from "../components/Hero.astro";
+import Rodape from "../components/Rodape.astro";
+import { site } from "../content/site";
+import Base from "../layouts/Base.astro";
+import { whatsappUrl } from "../lib/contato";
+---
+
+<Base title={site.seo.title} description={site.seo.description} caminho="/">
+  <Hero
+    nome={site.nome}
+    headline={site.hero.headline}
+    subheadline={site.hero.subheadline}
+    cta={site.hero.cta}
+    ctaHref={whatsappUrl(site.contato.whatsapp, site.contato.mensagemWhatsapp)}
+    redutor={site.hero.redutor}
+    foto={site.hero.imagem}
+  />
+  <Contato contato={site.contato} />
+  <Rodape slot="fim" razaoSocial={site.empresa.razaoSocial} cnpj={site.empresa.cnpj} />
+</Base>

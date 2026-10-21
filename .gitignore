@@ -1,0 +1,14 @@
+node_modules/
+dist/
+.astro/
+.env
+.env.*
+.lighthouseci/
+test-results/
+playwright-report/
+tests/visual/*.png
+.DS_Store
+*.log
+
+# Fotos originais do cliente (npm run images). Nunca vão para o repositório.
+original/

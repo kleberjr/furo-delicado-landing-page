@@ -1,0 +1,9 @@
+dist/
+.astro/
+node_modules/
+.lighthouseci/
+test-results/
+playwright-report/
+package-lock.json
+.claude/skills/web-design-guidelines/
+skills-lock.json
