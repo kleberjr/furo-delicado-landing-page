@@ -70,3 +70,14 @@ skills `design` e `build` e confira cada ponto antes de mostrar resultado ao usu
     **nome completo** (o rodapé pode usar o nome de exibição).
 20. **Itens que o cliente pediu para não exibir** (aqui, a licença sanitária e o número do COREN)
     ficam registrados no briefing e não aparecem no site.
+
+## Git
+
+21. **Use sempre Conventional Commits (semantic commit)**: `feat:`, `fix:`, `docs:`, `style:`,
+    `refactor:`, `test:`, `chore:`, com descrição curta em português (ex.:
+    `docs: adiciona aprendizados de git ao projeto`).
+
+## Para o landing-kit (template)
+
+22. **Renomear `design/referencias/` para `design/references/`** no `landing-page-kit`, e atualizar
+    as menções na skill `design`, no `CLAUDE.md` e no `README.md` do kit.
