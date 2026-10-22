@@ -1,0 +1,181 @@
+---
+import { Picture } from "astro:assets";
+import Brilho from "./Brilho.astro";
+import TituloSecao from "./TituloSecao.astro";
+import { imagem } from "../lib/imagens";
+import type { Site } from "../content/site";
+
+interface Props {
+  sobre: Site["sobre"];
+}
+
+const { sobre } = Astro.props;
+---
+
+<section id="sobre" class="section section--escuro" aria-labelledby="sobre-titulo">
+  <div class="container sobre">
+    <div class="sobre__visual">
+      <Picture
+        class="sobre__foto"
+        src={imagem(sobre.foto.arquivo)}
+        alt={sobre.foto.alt}
+        formats={["avif", "webp"]}
+        fallbackFormat="webp"
+        widths={[400, 600, 900]}
+        sizes="(min-width: 64rem) 30rem, 90vw"
+      />
+      <p class="sobre__selo">
+        <span class="sobre__selo-numero">{sobre.selo.numero}</span>
+        {sobre.selo.rotulo}
+      </p>
+    </div>
+
+    <div>
+      <TituloSecao id="sobre-titulo" eyebrow={sobre.eyebrow} titulo={sobre.titulo} />
+      <div class="sobre__texto">
+        {sobre.texto.map((t) => (
+          <p>{t}</p>
+        ))}
+      </div>
+
+      <h3 class="sobre__formacao-titulo">{sobre.formacaoTitulo}</h3>
+      <ul class="sobre__formacao" role="list">
+        {sobre.formacao.map((f) => (
+          <li>
+            <Brilho class="sobre__marcador" />
+            {f}
+          </li>
+        ))}
+      </ul>
+
+      <dl class="sobre__numeros">
+        {sobre.numeros.map((n) => (
+          <div>
+            <dt>{n.rotulo}</dt>
+            <dd>{n.valor}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </div>
+</section>
+
+<style>
+  .sobre {
+    display: grid;
+    gap: var(--space-12);
+    align-items: center;
+  }
+
+  .sobre__visual {
+    position: relative;
+    max-width: 30rem;
+  }
+
+  .sobre :global(.sobre__foto) {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    object-position: 50% 20%;
+    border-radius: var(--radius-xl);
+  }
+
+  .sobre__selo {
+    position: absolute;
+    right: var(--space-4);
+    bottom: calc(var(--space-6) * -1);
+    display: grid;
+    place-content: center;
+    width: 6.5rem;
+    height: 6.5rem;
+    margin: 0;
+    border-radius: var(--radius-pill);
+    background: var(--color-rose-strong);
+    color: var(--color-on-rose);
+    box-shadow: var(--shadow-lg);
+    font-size: var(--font-size-xs);
+    line-height: 1.2;
+    text-align: center;
+  }
+
+  .sobre__selo-numero {
+    display: block;
+    margin-bottom: var(--space-1);
+    font-family: var(--font-display);
+    font-variant-numeric: lining-nums;
+    font-size: var(--font-size-xl);
+    line-height: 1;
+  }
+
+  .sobre__texto {
+    margin-block: var(--space-6) var(--space-8);
+    color: var(--color-on-plum-muted);
+  }
+
+  .sobre__formacao-titulo {
+    margin-bottom: var(--space-4);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--color-blush);
+  }
+
+  .sobre__formacao {
+    display: grid;
+    gap: var(--space-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: var(--font-size-sm);
+    color: var(--color-on-plum-muted);
+  }
+
+  .sobre__formacao li {
+    display: flex;
+    gap: var(--space-3);
+    align-items: baseline;
+  }
+
+  .sobre__formacao :global(.sobre__marcador) {
+    width: 0.75rem;
+    flex: none;
+    color: var(--color-rose-soft);
+  }
+
+  .sobre__numeros {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-6) var(--space-12);
+    margin: var(--space-10) 0 0;
+    padding-top: var(--space-8);
+    border-top: 1px solid var(--color-plum-line);
+  }
+
+  .sobre__numeros div {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: var(--space-2);
+  }
+
+  .sobre__numeros dd {
+    margin: 0;
+    font-family: var(--font-display);
+    font-variant-numeric: lining-nums;
+    font-size: var(--font-size-xl);
+    line-height: 1.1;
+  }
+
+  .sobre__numeros dt {
+    font-size: var(--font-size-xs);
+    color: var(--color-on-plum-muted);
+  }
+
+  @media (width >= 64rem) {
+    .sobre {
+      grid-template-columns: 1fr 1.1fr;
+      gap: var(--space-16);
+    }
+  }
+</style>

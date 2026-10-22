@@ -1,59 +1,305 @@
 ---
+import Icone from "./Icone.astro";
 import { formatarTelefoneBR, telHref, whatsappUrl } from "../lib/contato";
 import type { Site } from "../content/site";
 
 interface Props {
+  secao: Site["secaoContato"];
   contato: Site["contato"];
 }
 
-const { contato } = Astro.props;
+const { secao, contato } = Astro.props;
 ---
 
-<section class="section section--alt" aria-labelledby="contato-titulo">
-  <div class="container contato">
-    <h2 id="contato-titulo">Contato</h2>
-    <ul role="list">
-      <li>
-        <a
-          href={whatsappUrl(contato.whatsapp, contato.mensagemWhatsapp)}
-          target="_blank"
-          rel="noopener noreferrer"
+<section id="contato" class="section" aria-labelledby="contato-titulo">
+  <div class="container">
+    <div class="contato">
+      <div class="contato__texto">
+        <p class="eyebrow">{secao.eyebrow}</p>
+        <h2 id="contato-titulo" class="contato__titulo">
+          {secao.titulo.antes} <em class="destaque">{secao.titulo.destaque}</em>
+          {secao.titulo.depois}
+        </h2>
+        <p class="contato__sub">{secao.texto}</p>
+
+        <div class="contato__acoes">
+          <a
+            class="btn btn--lg"
+            href={whatsappUrl(contato.whatsapp, contato.mensagemWhatsapp)}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Icone nome="whatsapp" class="contato__icone-btn" />
+            {secao.ctaWhatsapp}
+          </a>
+          {contato.telefone && (
+            <a class="contato__tel" href={telHref(contato.telefone)}>
+              <Icone nome="telefone" class="contato__icone-btn" />
+              {formatarTelefoneBR(contato.telefone)}
+            </a>
+          )}
+        </div>
+
+        <ul class="contato__info" role="list">
+          <li>
+            <Icone nome="local" class="contato__icone" />
+            <span>
+              <span class="contato__info-titulo">{contato.enderecoLinhas.rua}</span>
+              <span class="contato__info-detalhe">{contato.enderecoLinhas.cidade}</span>
+            </span>
+          </li>
+          <li>
+            <Icone nome="relogio" class="contato__icone" />
+            <span>
+              <span class="contato__info-titulo">{contato.horario.join(" · ")}</span>
+              <span class="contato__info-detalhe">{contato.atendimento}</span>
+            </span>
+          </li>
+          <li>
+            <Icone nome="instagram" class="contato__icone" />
+            <span>
+              <a
+                class="contato__info-titulo"
+                href={contato.instagram.url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {contato.instagram.usuario}
+              </a>
+              <span class="contato__info-detalhe">{secao.instagramDetalhe}</span>
+            </span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="contato__mapa">
+        <div
+          class="mapa"
+          data-mapa
+          data-mapa-src={contato.mapaEmbedUrl}
+          data-mapa-titulo={secao.mapa.tituloIframe}
         >
-          WhatsApp {formatarTelefoneBR(contato.whatsapp)}
+          <span class="mapa__pino">
+            <Icone nome="local" class="mapa__pino-icone" />
+          </span>
+          <p class="mapa__aviso">{secao.mapa.aviso}</p>
+          <button class="btn btn--rose" type="button" data-mapa-carregar>
+            {secao.mapa.botao}
+          </button>
+        </div>
+        <a class="contato__rota" href={contato.rotaUrl} target="_blank" rel="noopener noreferrer">
+          <Icone nome="rota" class="contato__icone-rota" />
+          {secao.mapa.rota}
         </a>
-      </li>
-      {contato.telefone && (
-        <li>
-          <a href={telHref(contato.telefone)}>Telefone {formatarTelefoneBR(contato.telefone)}</a>
-        </li>
-      )}
-      {contato.email && (
-        <li>
-          <a href={`mailto:${contato.email}`}>{contato.email}</a>
-        </li>
-      )}
-      <li>
-        <a href={contato.mapaUrl} target="_blank" rel="noopener noreferrer">
-          {contato.endereco}
-        </a>
-      </li>
-      {contato.horario.map((h) => (
-        <li>{h}</li>
-      ))}
-    </ul>
+      </div>
+    </div>
   </div>
 </section>
 
+<script>
+  // Mapa só carrega no clique: o iframe do Google grava cookies, então nada sai antes da ação.
+  for (const botao of document.querySelectorAll<HTMLButtonElement>("[data-mapa-carregar]")) {
+    botao.addEventListener("click", () => {
+      const caixa = botao.closest<HTMLElement>("[data-mapa]");
+      const src = caixa?.dataset.mapaSrc;
+      if (!caixa || !src) return;
+      const iframe = document.createElement("iframe");
+      iframe.src = src;
+      iframe.title = caixa.dataset.mapaTitulo ?? "";
+      iframe.referrerPolicy = "strict-origin-when-cross-origin";
+      iframe.allowFullscreen = true;
+      caixa.replaceChildren(iframe);
+      caixa.classList.add("mapa--carregado");
+      iframe.focus();
+    });
+  }
+</script>
+
 <style>
-  .contato ul {
+  .contato {
+    display: grid;
+    gap: var(--space-10);
+    padding: var(--space-10) var(--space-5);
+    border-radius: var(--radius-xl);
+    background: var(--color-blush);
+  }
+
+  .contato__titulo {
+    font-size: var(--font-size-2xl);
+  }
+
+  .contato__sub {
+    max-width: 30rem;
+    margin-bottom: var(--space-8);
+    color: var(--color-text-muted);
+  }
+
+  .contato__acoes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin-bottom: var(--space-10);
+  }
+
+  .contato__acoes :global(.contato__icone-btn) {
+    width: 1.25rem;
+    flex: none;
+  }
+
+  .contato__tel {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    min-height: 3.25rem;
+    padding-inline: var(--space-6);
+    border: 1px solid var(--color-arch-line);
+    border-radius: var(--radius-pill);
+    font-weight: var(--font-weight-regular);
+    text-decoration: none;
+    color: var(--color-text);
+  }
+
+  .contato__tel:hover {
+    border-color: var(--color-rose);
+    background: var(--color-bg);
+  }
+
+  .contato__info {
+    display: grid;
+    gap: var(--space-6);
     margin: 0;
-    padding: 0;
+    padding: var(--space-6) var(--space-5);
+    border-radius: var(--radius-lg);
+    background: var(--color-bg);
+    box-shadow: var(--shadow-md);
     list-style: none;
   }
 
-  .contato a {
+  .contato__info li {
+    display: flex;
+    gap: var(--space-4);
+    align-items: flex-start;
+  }
+
+  .contato__info :global(.contato__icone) {
+    width: 1.375rem;
+    flex: none;
+    margin-top: var(--space-1);
+    color: var(--color-rose-strong);
+  }
+
+  .contato__info-titulo {
+    display: block;
+    font-family: var(--font-display);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.3;
+    color: var(--color-text);
+  }
+
+  a.contato__info-titulo {
     display: inline-block;
     min-height: var(--tap-min);
-    padding-block: var(--space-3);
+    padding-block: var(--space-2);
+    margin-block: calc(var(--space-2) * -1);
+    text-decoration-color: var(--color-arch-line);
+    text-underline-offset: 0.2em;
+  }
+
+  .contato__info-detalhe {
+    display: block;
+    margin-top: var(--space-1);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+  }
+
+  /* Mapa: fachada clicável → iframe do Google */
+  .contato__mapa {
+    display: grid;
+    grid-template-rows: 1fr auto;
+    gap: var(--space-4);
+  }
+
+  .mapa {
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: var(--space-4);
+    min-height: 20rem;
+    padding: var(--space-8) var(--space-6);
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    background-color: var(--color-surface);
+    background-image:
+      repeating-linear-gradient(0deg, var(--color-border) 0 1px, transparent 1px 2.5rem),
+      repeating-linear-gradient(90deg, var(--color-border) 0 1px, transparent 1px 2.5rem);
+    box-shadow: var(--shadow-md);
+    text-align: center;
+  }
+
+  .mapa--carregado {
+    display: block;
+    padding: 0;
+  }
+
+  .mapa :global(iframe) {
+    width: 100%;
+    height: 100%;
+    min-height: 20rem;
+    border: 0;
+  }
+
+  .mapa__pino {
+    display: grid;
+    place-items: center;
+    width: 4rem;
+    height: 4rem;
+    border-radius: var(--radius-pill);
+    background: var(--color-rose-strong);
+    color: var(--color-on-rose);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .mapa__pino :global(.mapa__pino-icone) {
+    width: 1.75rem;
+  }
+
+  .mapa__aviso {
+    max-width: 18rem;
+    margin: 0;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+  }
+
+  .contato__rota {
+    display: inline-flex;
+    align-items: center;
+    justify-self: start;
+    gap: var(--space-2);
+    min-height: var(--tap-min);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-regular);
+    color: var(--color-rose-strong);
+    text-underline-offset: 0.2em;
+  }
+
+  .contato__rota :global(.contato__icone-rota) {
+    width: 1rem;
+  }
+
+  @media (width >= 64rem) {
+    .contato {
+      grid-template-columns: 1.05fr 1fr;
+      gap: var(--space-12);
+      padding: var(--space-16);
+    }
+
+    .contato__info {
+      padding: var(--space-8) var(--space-6);
+    }
+
+    .mapa {
+      height: 100%;
+    }
   }
 </style>

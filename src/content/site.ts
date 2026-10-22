@@ -1,13 +1,44 @@
 /**
  * Conteúdo do cliente: a única fonte de texto da página. Componentes não têm texto de cliente.
- *
- * DEMONSTRAÇÃO FICTÍCIA ("Negócio Exemplo"): existe só para os testes do kit rodarem.
- * Em cada projeto de cliente, este arquivo é reescrito a partir do briefing.
- * Onde faltar conteúdo real, use "[[PLACEHOLDER: o que falta]]": o build de produção falha.
+ * Fonte: briefing-cliente.md (aprovado). Onde faltar conteúdo real, use
+ * "[[PLACEHOLDER: o que falta]]": o build de produção falha.
  */
+
+interface Foto {
+  /** Arquivo em src/assets/images (gerado por npm run images). */
+  arquivo: string;
+  alt: string;
+}
+
+/** Título de seção: [antes] [destaque em itálico rosé][depois]. */
+interface Titulo {
+  antes: string;
+  destaque: string;
+  depois?: string;
+}
+
+/** Cores pastel dos cartões (tokens --color-*). */
+type Pastel = "butter" | "sage" | "lilac" | "peach" | "blush";
+
+/** Ícones disponíveis em Icone.astro. */
+export type NomeIcone =
+  | "whatsapp"
+  | "telefone"
+  | "local"
+  | "relogio"
+  | "instagram"
+  | "rota"
+  | "joia"
+  | "escudo"
+  | "cuidado"
+  | "casa"
+  | "seta";
 
 export interface Site {
   nome: string;
+  logo: Foto;
+  /** Monograma usado como favicon. */
+  icone: string;
   seo: {
     /** URL final do site, com https (canônica e Open Graph). */
     url: string;
@@ -15,16 +46,77 @@ export interface Site {
     title: string;
     /** Até ~155 caracteres. */
     description: string;
+    /** Imagem de compartilhamento (Open Graph). */
+    imagem: string;
+    /** Subtipo de LocalBusiness para o JSON-LD. */
+    tipoNegocio: string;
+    areaAtendida: string;
   };
+  nav: { rotulo: string; href: string }[];
+  ctaCurto: string;
   hero: {
-    headline: string;
+    selo: string;
+    /** Título em duas linhas: [linha1] / [destaque em itálico] [sublinhado]. */
+    headline: { linha1: string; destaque: string; sublinhado: string };
     subheadline: string;
     cta: string;
-    /** Redutor de atrito ao lado do CTA, só se for verdade. */
-    redutor?: string;
-    /** Arquivo em src/assets/images (gerado por npm run images). */
-    imagem: { arquivo: string; alt: string };
+    avaliacoes: { nota: string; total: string; miniaturas: Foto[] };
+    foto: Foto;
+    fotoEspaco: Foto;
+    experiencia: { numero: string; rotulo: string };
+    profissional: { nome: string; titulo: string };
   };
+  servicos: {
+    eyebrow: string;
+    titulo: Titulo;
+    texto: string;
+    preco: string;
+    cartoes: { titulo: string; texto: string; foto: Foto; cor: Pastel }[];
+    tiposTitulo: string;
+    tipos: string[];
+  };
+  diferenciais: {
+    eyebrow: string;
+    titulo: Titulo;
+    itens: { titulo: string; texto: string; icone: NomeIcone; cor: Pastel }[];
+  };
+  sobre: {
+    eyebrow: string;
+    titulo: Titulo;
+    texto: string[];
+    foto: Foto;
+    selo: { numero: string; rotulo: string };
+    formacaoTitulo: string;
+    formacao: string[];
+    numeros: { valor: string; rotulo: string }[];
+  };
+  comoFunciona: {
+    eyebrow: string;
+    titulo: Titulo;
+    passos: { titulo: string; texto: string }[];
+  };
+  avaliacoes: {
+    eyebrow: string;
+    titulo: Titulo;
+    resumo: string;
+    linkGoogle: string;
+    depoimentos: { texto: string; autor: string; contexto?: string }[];
+  };
+  faq: {
+    eyebrow: string;
+    titulo: Titulo;
+    perguntas: { pergunta: string; resposta: string }[];
+  };
+  secaoContato: {
+    eyebrow: string;
+    titulo: Titulo;
+    texto: string;
+    ctaWhatsapp: string;
+    instagramDetalhe: string;
+    mapa: { aviso: string; botao: string; rota: string; tituloIframe: string };
+  };
+  /** Rótulo acessível do botão flutuante do WhatsApp. */
+  flutuante: string;
   contato: {
     /** E.164, ex.: +5561999999999 */
     whatsapp: string;
@@ -32,40 +124,347 @@ export interface Site {
     telefone?: string;
     email?: string;
     endereco: string;
+    /** Endereço estruturado para o JSON-LD. */
+    enderecoPostal: { rua: string; bairro: string; cidade: string; uf: string; cep: string };
+    enderecoLinhas: { rua: string; cidade: string };
+    /** Busca no Google Maps (JSON-LD e links). */
     mapaUrl: string;
+    /** Rota até o estúdio no Google Maps. */
+    rotaUrl: string;
+    /** iframe do Google Maps, carregado só no clique (libere o domínio em frame-src). */
+    mapaEmbedUrl: string;
     horario: string[];
+    atendimento: string;
+    instagram: { usuario: string; url: string };
   };
-  empresa: { razaoSocial: string; cnpj: string };
-  privacidade: { atualizadaEm: string; email: string };
+  rodape: {
+    logo: Foto;
+    frase: string;
+    contatoTitulo: string;
+    enderecoTitulo: string;
+    horarioTitulo: string;
+    privacidade: string;
+  };
+  /** Responsável pelo negócio (controladora na LGPD). Sem CNPJ: profissional autônoma. */
+  empresa: {
+    /** Nome de exibição (rodapé). */
+    titular: string;
+    /** Nome completo da pessoa física responsável (Política de Privacidade). */
+    nomeCompleto: string;
+    qualificacao: string;
+    cnpj?: string;
+  };
+  /** Sem e-mail, o canal de privacidade é o WhatsApp. */
+  privacidade: { atualizadaEm: string; email?: string };
 }
 
 export const site: Site = {
-  nome: "Negócio Exemplo",
+  nome: "Furo Delicado",
+  logo: { arquivo: "logo-completo-rose.png", alt: "Furo Delicado: perfuração auricular segura" },
+  icone: "logo-monograma.png",
   seo: {
-    url: "https://negocio-exemplo.example",
-    title: "Serviço Exemplo em Cidade Exemplo | Negócio Exemplo",
+    url: "https://furodelicado.com.br",
+    title: "Furo de orelha humanizado em Planaltina-DF | Furo Delicado",
     description:
-      "Página de demonstração do landing-kit, com conteúdo fictício. Substitua pelo conteúdo do cliente.",
+      "Furo de orelha e piercing sem dor em Planaltina-DF, para bebês a partir de 15 dias, crianças e adultos. Joia de titânio e acompanhamento inclusos.",
+    imagem: "luciana-5.jpg",
+    tipoNegocio: "HealthAndBeautyBusiness",
+    areaAtendida: "Planaltina-DF e região",
   },
+  nav: [
+    { rotulo: "Serviços", href: "#servicos" },
+    { rotulo: "Sobre", href: "#sobre" },
+    { rotulo: "Avaliações", href: "#avaliacoes" },
+    { rotulo: "Contato", href: "#contato" },
+  ],
+  ctaCurto: "Agendar",
   hero: {
-    headline: "Serviço exemplo em Cidade Exemplo, sem complicação",
-    subheadline: "Página de demonstração com conteúdo fictício. Fale com a gente pelo WhatsApp.",
-    cta: "Chamar no WhatsApp",
-    redutor: "Exemplo de redutor de atrito",
-    imagem: {
-      arquivo: "demo-hero.webp",
-      alt: "Ilustração abstrata de demonstração (substituir por foto real do negócio)",
+    selo: "Furo humanizado",
+    headline: { linha1: "Furo de orelha", destaque: "sem dor", sublinhado: "e seguro." },
+    subheadline:
+      "Para bebês a partir de 15 dias, crianças e adultos em Planaltina-DF, com joia de titânio inclusa.",
+    cta: "Agendar pelo WhatsApp",
+    avaliacoes: {
+      nota: "5,0",
+      total: "128 avaliações no Google",
+      miniaturas: [
+        { arquivo: "orelha-crianca-2.jpg", alt: "" },
+        { arquivo: "orelha-adulto-2.jpg", alt: "" },
+        { arquivo: "local-1.jpg", alt: "" },
+      ],
+    },
+    foto: {
+      arquivo: "luciana-hero.png",
+      alt: "Luciana de Lurdes, de blazer branco e braços cruzados, sorrindo",
+    },
+    fotoEspaco: {
+      arquivo: "local-2.jpg",
+      alt: "Recepção do Furo Delicado, com o logo iluminado em um painel em arco",
+    },
+    experiencia: { numero: "5+", rotulo: "anos de experiência" },
+    profissional: { nome: "Luciana de Lurdes", titulo: "Técnica em enfermagem" },
+  },
+  servicos: {
+    eyebrow: "Serviços",
+    titulo: { antes: "Um cuidado para", destaque: "cada fase" },
+    texto:
+      "Do primeiro brinquinho do bebê ao terceiro furo, com joia de titânio e acompanhamento já inclusos.",
+    preco: "a partir de R$ 100",
+    cartoes: [
+      {
+        titulo: "Bebês e crianças",
+        texto: "A partir de 15 dias de vida, com calma e no tempo de cada criança.",
+        foto: {
+          arquivo: "orelha-crianca-1.jpg",
+          alt: "Bebê de faixa branca na cabeça com um brinquinho dourado na orelha",
+        },
+        cor: "peach",
+      },
+      {
+        titulo: "Lóbulo",
+        texto: "Primeiro, segundo e terceiro furo, para quem quer começar ou completar a orelha.",
+        foto: {
+          arquivo: "orelha-adulto-2.jpg",
+          alt: "Orelha com dois brincos de pedra no lóbulo e um piercing de flores na cartilagem",
+        },
+        cor: "sage",
+      },
+      {
+        titulo: "Cartilagem",
+        texto: "Tragus, helix, mid-helix, conch, daith e transversal.",
+        foto: {
+          arquivo: "orelha-adulto-1.jpg",
+          alt: "Orelha com vários piercings brilhantes na cartilagem e no lóbulo",
+        },
+        cor: "lilac",
+      },
+    ],
+    tiposTitulo: "Todas as perfurações",
+    tipos: [
+      "Lóbulo (1º, 2º e 3º furo)",
+      "Tragus",
+      "Helix",
+      "Mid-helix",
+      "Conch",
+      "Daith",
+      "Transversal",
+      "Aba nasal",
+      "Mamilo",
+    ],
+  },
+  diferenciais: {
+    eyebrow: "Diferenciais",
+    titulo: { antes: "Por que escolher o", destaque: "Furo Delicado" },
+    itens: [
+      {
+        titulo: "Joia de titânio inclusa",
+        texto: "As joias são nossas e já vêm no valor. Não usamos joias trazidas de fora.",
+        icone: "joia",
+        cor: "sage",
+      },
+      {
+        titulo: "Material esterilizado",
+        texto: "Todo o material é esterilizado em autoclave.",
+        icone: "escudo",
+        cor: "butter",
+      },
+      {
+        titulo: "Acompanhamento depois",
+        texto: "Você recebe orientação e suporte durante toda a cicatrização.",
+        icone: "cuidado",
+        cor: "blush",
+      },
+      {
+        titulo: "Atendimento a domicílio",
+        texto: "Prefere em casa? Nós vamos até você em Planaltina-DF e região.",
+        icone: "casa",
+        cor: "lilac",
+      },
+    ],
+  },
+  sobre: {
+    eyebrow: "Sobre",
+    titulo: { antes: "Cuidado de quem", destaque: "entende de gente" },
+    texto: [
+      "Luciana de Lurdes é técnica em enfermagem e trabalha com perfuração há mais de 5 anos.",
+      "Cada furo é feito sem pressa, com paciência e no tempo de quem está sendo atendido, do recém-nascido ao adulto.",
+    ],
+    foto: {
+      arquivo: "luciana-5.jpg",
+      alt: "Luciana de Lurdes sorrindo, de blazer branco, apoiada em um bloco branco",
+    },
+    selo: { numero: "5+", rotulo: "anos" },
+    formacaoTitulo: "Formação",
+    formacao: [
+      "Técnica em enfermagem",
+      "Piercing Humanizado: Método Aryanne Cantarino, com habilitação em primeiro brinquinho em bebês",
+      "Curso de técnica em piercings australianos",
+    ],
+    numeros: [
+      { valor: "5,0", rotulo: "nota no Google" },
+      { valor: "128", rotulo: "avaliações" },
+    ],
+  },
+  comoFunciona: {
+    eyebrow: "Como funciona",
+    titulo: { antes: "Simples, do", destaque: "agendamento", depois: " ao pós" },
+    passos: [
+      {
+        titulo: "Chame no WhatsApp",
+        texto: "Tire suas dúvidas e combine o dia e o horário, no estúdio ou na sua casa.",
+      },
+      {
+        titulo: "Perfuração delicada",
+        texto: "Com joia de titânio, material esterilizado e todo o tempo que for preciso.",
+      },
+      {
+        titulo: "Acompanhamento",
+        texto: "Depois do furo, você tem suporte para cuidar bem da cicatrização.",
+      },
+    ],
+  },
+  avaliacoes: {
+    eyebrow: "Avaliações",
+    titulo: { antes: "Quem furou,", destaque: "recomenda" },
+    resumo: "5,0 · 128 avaliações no Google",
+    linkGoogle: "Ver todas no Google",
+    // Avaliações públicas do Google (avaliacoes.md), texto literal.
+    depoimentos: [
+      {
+        texto:
+          "Atendimento humanizado! 💕 Estava com receio de furar a orelhinha da minha bebê, mas foi tudo muito tranquilo. Amei a recepção, o carinho e todo o cuidado que tiveram conosco. Recomendo de olhos fechados!",
+        autor: "Thaís R.",
+        contexto: "Furo na bebê",
+      },
+      {
+        texto:
+          "Excelente atendimento, profissional extremamente qualificada. Fiz meu segundo furo e não senti nenhuma dor",
+        autor: "Thuany F.",
+        contexto: "Segundo furo",
+      },
+      {
+        texto:
+          "Pode confiar, sem medo. Atendimento personalizado, com todo cuidado, paciência e preparo. Muito diferente de outros lugares aqui de Planaltina. Indico!",
+        autor: "Angelita S.",
+      },
+      {
+        texto:
+          "Maravilhosa! Atendimento em domicílio impecável, cuidadosa, atenciosa e profissional. Minha bebê ficou calma, Luciana transmite paz. Muito obrigada, amamos o mimo Deus abençoe!",
+        autor: "Daniele M.",
+        contexto: "Atendimento a domicílio",
+      },
+      {
+        texto:
+          "Experiência incrível, furo praticamente indolor e a recuperação maravilhosa praticamente sem incômodo, além da assistência oferecida durante o processo de cicatrização",
+        autor: "Ana Carolina S.",
+        contexto: "Cicatrização",
+      },
+      {
+        texto:
+          "Excelente profissional. Muito cuidadosa, equipamentos bem esterelizados, paciente, atenciosa e muito delicada. Simplesmente amei... Minha bebê não chorou durante o furo... Super recomendo!!!",
+        autor: "Juciely T.",
+        contexto: "Furo na bebê",
+      },
+    ],
+  },
+  faq: {
+    eyebrow: "Dúvidas",
+    titulo: { antes: "Perguntas", destaque: "frequentes" },
+    perguntas: [
+      {
+        pergunta: "Dói?",
+        resposta:
+          "O método é humanizado e feito com calma, para ser sem dor e sem trauma. Nas avaliações, muita gente conta que nem sentiu o furo.",
+      },
+      {
+        pergunta: "Com quantos dias posso furar a orelha do meu bebê?",
+        resposta:
+          "A partir de 15 dias de vida. O atendimento respeita o tempo do bebê: se ele estiver agitado, a gente espera ele se acalmar.",
+      },
+      {
+        pergunta: "Quanto custa?",
+        resposta:
+          "As perfurações começam em R$ 100, já com a joia de titânio e o acompanhamento pós-perfuração.",
+      },
+      {
+        pergunta: "Posso levar minha própria joia?",
+        resposta:
+          "Não. A perfuração é feita só com as nossas joias de titânio, que já estão inclusas no valor.",
+      },
+      {
+        pergunta: "O material é esterilizado?",
+        resposta: "Sim. Todo o material é esterilizado em autoclave.",
+      },
+      {
+        pergunta: "E depois do furo?",
+        resposta: "Você tem acompanhamento durante a cicatrização para tirar qualquer dúvida.",
+      },
+      {
+        pergunta: "Vocês atendem em casa?",
+        resposta:
+          "Sim. Além do estúdio, há atendimento a domicílio em Planaltina-DF e região. É só combinar pelo WhatsApp.",
+      },
+      {
+        pergunta: "Qual é o horário de atendimento?",
+        resposta:
+          "O atendimento é só com agendamento, sem horário fixo. Chame no WhatsApp e a gente encontra o melhor horário para você.",
+      },
+    ],
+  },
+  secaoContato: {
+    eyebrow: "Contato",
+    titulo: { antes: "Vamos marcar o seu", destaque: "furo", depois: "?" },
+    texto:
+      "Chame no WhatsApp e a gente combina o melhor horário para você, no estúdio ou na sua casa.",
+    ctaWhatsapp: "Chamar no WhatsApp",
+    instagramDetalhe: "Trabalhos e dicas de cuidado",
+    mapa: {
+      aviso: "O mapa é do Google Maps e só carrega quando você clicar.",
+      botao: "Ver mapa",
+      rota: "Traçar rota no Google Maps",
+      tituloIframe: "Mapa com a localização do Furo Delicado",
     },
   },
+  flutuante: "Conversar no WhatsApp",
   contato: {
-    whatsapp: "+5500900000000",
-    mensagemWhatsapp: "Olá! Vim pela página de demonstração.",
-    telefone: "+5500900000000",
-    email: "contato@negocio-exemplo.example",
-    endereco: "Rua Exemplo, 123, Centro, Cidade Exemplo/EX, 00000-000",
-    mapaUrl: "https://www.google.com/maps/search/?api=1&query=Rua+Exemplo,+123",
-    horario: ["Segunda a sexta: 9h às 18h", "Sábado: 9h às 13h"],
+    whatsapp: "+5561994552929",
+    mensagemWhatsapp: "Olá! Vim pelo site e gostaria de agendar uma perfuração.",
+    telefone: "+5561994552929",
+    endereco:
+      "St. Res. Leste, Buritis I, Quadra 03, Lote 41 - Planaltina, Brasília - DF, 73350-305",
+    mapaUrl:
+      "https://www.google.com/maps/search/?api=1&query=Furo+Delicado+Piercings+Planaltina+DF",
+    enderecoPostal: {
+      rua: "St. Res. Leste, Buritis I, Quadra 03, Lote 41",
+      bairro: "Setor Residencial Leste",
+      cidade: "Planaltina, Brasília",
+      uf: "DF",
+      cep: "73350-305",
+    },
+    enderecoLinhas: {
+      rua: "St. Res. Leste, Buritis I, Qd. 03, Lt. 41",
+      cidade: "Planaltina, Brasília - DF · 73350-305",
+    },
+    rotaUrl:
+      "https://www.google.com/maps/dir/?api=1&destination=Furo+Delicado+Piercings+Planaltina+DF",
+    mapaEmbedUrl:
+      "https://www.google.com/maps?q=Furo+Delicado+Piercings,+Planaltina+-+DF,+73350-305&output=embed",
+    horario: ["Somente com agendamento"],
+    atendimento: "No estúdio ou a domicílio, em Planaltina-DF e região",
+    instagram: { usuario: "@furodelicado", url: "https://www.instagram.com/furodelicado/" },
   },
-  empresa: { razaoSocial: "Negócio Exemplo Ltda. (fictícia)", cnpj: "00.000.000/0000-00" },
-  privacidade: { atualizadaEm: "2026-10-21", email: "privacidade@negocio-exemplo.example" },
+  rodape: {
+    logo: { arquivo: "logo-completo-claro.png", alt: "Furo Delicado: perfuração auricular segura" },
+    frase: "Furo de orelha humanizado em Planaltina-DF, para bebês, crianças e adultos.",
+    contatoTitulo: "Contato",
+    enderecoTitulo: "Endereço",
+    horarioTitulo: "Atendimento",
+    privacidade: "Política de Privacidade",
+  },
+  empresa: {
+    titular: "Luciana de Lurdes",
+    nomeCompleto: "Luciana de Lurdes Neves da Costa",
+    qualificacao: "profissional autônoma responsável pelo Furo Delicado",
+  },
+  privacidade: { atualizadaEm: "2026-10-22" },
 };

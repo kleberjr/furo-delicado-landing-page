@@ -17,18 +17,69 @@ body {
   color: var(--color-text);
   font-family: var(--font-sans);
   font-size: var(--font-size-base);
+  font-weight: var(--font-weight-light);
   line-height: var(--line-height-base);
   overflow-x: hidden;
+}
+
+html {
+  scroll-padding-top: var(--header-height);
 }
 
 h1,
 h2,
 h3 {
   margin: 0 0 var(--space-4);
+  font-family: var(--font-display);
   line-height: var(--line-height-tight);
   letter-spacing: var(--letter-spacing-tight);
-  font-weight: var(--font-weight-bold);
+  font-weight: var(--font-weight-regular);
   text-wrap: balance;
+}
+
+/* Palavra de destaque nos títulos: itálico rosé (texto grande, contraste ≥ 3:1). */
+.destaque {
+  font-style: italic;
+  color: var(--color-rose);
+}
+
+/* No escuro (seção ameixa): itálico em rosé claro (4,7:1, só texto grande). */
+.section--escuro .destaque {
+  color: var(--color-rose-soft);
+}
+
+.section--escuro .eyebrow {
+  color: var(--color-blush);
+}
+
+/* Fundos pastel dos cartões (só fundo; texto em --color-text/--color-text-muted). */
+.pastel--butter {
+  background: var(--color-butter);
+}
+
+.pastel--sage {
+  background: var(--color-sage);
+}
+
+.pastel--lilac {
+  background: var(--color-lilac);
+}
+
+.pastel--peach {
+  background: var(--color-peach);
+}
+
+.pastel--blush {
+  background: var(--color-blush);
+}
+
+.eyebrow {
+  margin-bottom: var(--space-4);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--letter-spacing-eyebrow);
+  text-transform: uppercase;
+  color: var(--color-rose-strong);
 }
 
 h1 {
@@ -63,6 +114,13 @@ button {
   cursor: pointer;
 }
 
+a,
+button,
+summary {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
 :focus-visible {
   outline: 3px solid var(--color-focus);
   outline-offset: 2px;
@@ -72,7 +130,16 @@ button {
   width: 100%;
   max-width: var(--container-max);
   margin-inline: auto;
-  padding-inline: var(--space-4);
+  padding-inline: var(--space-6);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
 .section {
@@ -81,6 +148,15 @@ button {
 
 .section--alt {
   background: var(--color-surface);
+}
+
+.section--escuro {
+  background: var(--color-plum);
+  color: var(--color-on-plum);
+}
+
+.section--escuro :focus-visible {
+  outline-color: var(--color-focus-on-dark);
 }
 
 .btn {
@@ -92,15 +168,34 @@ button {
   padding: var(--space-3) var(--space-6);
   border: 2px solid transparent;
   border-radius: var(--radius-pill);
-  font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-regular);
   text-decoration: none;
-  background: var(--color-cta);
-  color: var(--color-on-cta);
-  box-shadow: var(--shadow-sm);
+  background: var(--color-plum);
+  color: var(--color-on-plum);
+  box-shadow: var(--shadow-lg);
+  transition:
+    background-color 0.2s var(--ease-out),
+    transform 0.2s var(--ease-out);
 }
 
 .btn:hover {
-  background: var(--color-cta-hover);
+  background: var(--color-plum-hover);
+  transform: translateY(-1px);
+}
+
+.btn--lg {
+  min-height: 3.25rem;
+  padding-inline: var(--space-8);
+}
+
+.btn--rose {
+  background: var(--color-rose-strong);
+  color: var(--color-on-rose);
+  box-shadow: none;
+}
+
+.btn--rose:hover {
+  background: var(--color-plum);
 }
 
 .friction {
@@ -116,8 +211,8 @@ button {
   z-index: var(--z-float);
   padding: var(--space-2) var(--space-4);
   border-radius: var(--radius-sm);
-  background: var(--color-brand);
-  color: var(--color-on-brand);
+  background: var(--color-plum);
+  color: var(--color-on-plum);
   transform: translateY(-200%);
 }
 

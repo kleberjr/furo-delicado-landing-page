@@ -1,0 +1,30 @@
+---
+/** Eyebrow + h2 com uma palavra em destaque (itálico rosé). */
+interface Props {
+  id: string;
+  eyebrow: string;
+  titulo: { antes: string; destaque: string; depois?: string };
+  centro?: boolean;
+}
+
+const { id, eyebrow, titulo, centro = false } = Astro.props;
+---
+
+<div class:list={["titulo-secao", { "titulo-secao--centro": centro }]}>
+  <p class="eyebrow">{eyebrow}</p>
+  <h2 id={id}>
+    {titulo.antes} <em class="destaque">{titulo.destaque}</em>
+    {titulo.depois}
+  </h2>
+</div>
+
+<style>
+  .titulo-secao h2 {
+    margin: 0;
+    font-size: var(--font-size-2xl);
+  }
+
+  .titulo-secao--centro {
+    text-align: center;
+  }
+</style>

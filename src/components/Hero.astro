@@ -1,80 +1,374 @@
 ---
-import { Picture } from "astro:assets";
+import { Image, Picture } from "astro:assets";
+import Brilho from "./Brilho.astro";
 import { imagem } from "../lib/imagens";
+import type { Site } from "../content/site";
 
 interface Props {
-  nome: string;
-  headline: string;
-  subheadline: string;
-  cta: string;
+  hero: Site["hero"];
   ctaHref: string;
-  redutor?: string | undefined;
-  foto: { arquivo: string; alt: string };
 }
 
-const { nome, headline, subheadline, cta, ctaHref, redutor, foto } = Astro.props;
+const { hero, ctaHref } = Astro.props;
 ---
 
 <section class="hero">
   <div class="container hero__grid">
-    <div>
-      <p class="hero__marca">{nome}</p>
-      <h1>{headline}</h1>
-      <p class="hero__sub">{subheadline}</p>
-      <a class="btn" href={ctaHref} target="_blank" rel="noopener noreferrer" data-cta="primary">
-        {cta}
-      </a>
-      {redutor && <p class="friction hero__friction">{redutor}</p>}
+    <div class="hero__texto">
+      <p class="hero__selo">
+        <Brilho class="hero__selo-icone" />
+        {hero.selo}
+      </p>
+      <h1 class="hero__titulo">
+        {hero.headline.linha1}
+        <span class="hero__linha2">
+          <em class="destaque">{hero.headline.destaque}</em>{" "}
+          <span class="hero__sublinhado">
+            {hero.headline.sublinhado}
+            <svg viewBox="0 0 200 12" preserveAspectRatio="none" aria-hidden="true">
+              <path d="M3 9C45 3.5 120 2 197 6.5"></path>
+            </svg>
+          </span>
+        </span>
+      </h1>
+      <p class="hero__sub">{hero.subheadline}</p>
+      <div class="hero__acoes">
+        <a
+          class="btn btn--lg"
+          href={ctaHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          data-cta="primary"
+        >
+          {hero.cta}
+        </a>
+        <div class="hero__prova">
+          <ul class="hero__miniaturas" role="list">
+            {hero.avaliacoes.miniaturas.map((m) => (
+              <li>
+                <Image src={imagem(m.arquivo)} alt={m.alt} width={80} height={80} />
+              </li>
+            ))}
+          </ul>
+          <p>
+            <svg class="hero__estrela" viewBox="0 0 20 20" aria-hidden="true">
+              <path d="m10 1.5 2.6 5.6 6.1.7-4.5 4.2 1.2 6L10 15l-5.4 3 1.2-6-4.5-4.2 6.1-.7z"></path>
+            </svg>
+            <strong>{hero.avaliacoes.nota}</strong>{" "}
+            <span class="hero__ponto" aria-hidden="true">
+              ·
+            </span>{" "}
+            <span class="hero__total">{hero.avaliacoes.total}</span>
+          </p>
+        </div>
+      </div>
     </div>
-    <Picture
-      class="hero__img"
-      src={imagem(foto.arquivo)}
-      alt={foto.alt}
-      formats={["avif", "webp"]}
-      fallbackFormat="webp"
-      widths={[480, 800, 1200]}
-      sizes="(min-width: 48rem) 50vw, 100vw"
-      loading="eager"
-      fetchpriority="high"
-    />
+
+    <div class="hero__visual">
+      <div class="hero__arco-linha" aria-hidden="true"></div>
+      <div class="hero__arco">
+        <Picture
+          class="hero__foto"
+          src={imagem(hero.foto.arquivo)}
+          alt={hero.foto.alt}
+          formats={["avif", "webp"]}
+          fallbackFormat="webp"
+          widths={[400, 600, 900, 1200]}
+          sizes="(min-width: 64rem) 34rem, 90vw"
+          loading="eager"
+          fetchpriority="high"
+        />
+      </div>
+      <Brilho class="hero__brilho" />
+      <Image
+        class="hero__espaco"
+        src={imagem(hero.fotoEspaco.arquivo)}
+        alt={hero.fotoEspaco.alt}
+        widths={[160, 320]}
+        sizes="10rem"
+      />
+      <p class="hero__experiencia">
+        <span class="hero__experiencia-numero">{hero.experiencia.numero}</span>
+        {hero.experiencia.rotulo}
+      </p>
+      <p class="hero__profissional">
+        <span class="hero__profissional-nome">{hero.profissional.nome}</span>
+        <span class="hero__profissional-titulo">{hero.profissional.titulo}</span>
+      </p>
+    </div>
   </div>
 </section>
 
 <style>
   .hero {
-    background: var(--color-brand);
-    color: var(--color-on-brand);
-    padding-block: var(--space-6) var(--space-section);
+    padding-block: var(--space-10) var(--space-16);
+    overflow: hidden;
   }
 
   .hero__grid {
     display: grid;
-    gap: var(--space-8);
+    gap: var(--space-16);
     align-items: center;
   }
 
-  .hero__marca {
+  /* Texto */
+  .hero__selo {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
     margin-bottom: var(--space-6);
-    font-weight: var(--font-weight-bold);
+    padding: var(--space-1) var(--space-4);
+    border-radius: var(--radius-pill);
+    background: var(--color-blush);
+    color: var(--color-rose-strong);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+  }
+
+  .hero__selo :global(.hero__selo-icone) {
+    width: 0.75rem;
+    flex: none;
+  }
+
+  .hero__titulo {
+    margin-bottom: var(--space-6);
+    font-size: var(--font-size-hero);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--line-height-hero);
+  }
+
+  .hero__linha2 {
+    display: block;
+  }
+
+  .hero__sublinhado {
+    position: relative;
+    display: inline-block;
+  }
+
+  .hero__sublinhado svg {
+    position: absolute;
+    left: 0;
+    bottom: -0.04em;
+    width: 100%;
+    height: 0.14em;
+    fill: none;
+    stroke: var(--color-rose-soft);
+    stroke-width: 3;
+    stroke-linecap: round;
   }
 
   .hero__sub {
+    max-width: 30rem;
+    margin-bottom: var(--space-8);
     font-size: var(--font-size-lg);
-    margin-bottom: var(--space-6);
+    color: var(--color-text-muted);
   }
 
-  .hero__friction {
-    color: var(--color-on-brand);
+  /* Pequeno/médio: avaliações acima do botão. Grande: lado a lado, botão primeiro. */
+  .hero__acoes {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-5);
   }
 
-  .hero :global(.hero__img) {
+  .hero__prova {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    order: -1;
+  }
+
+  .hero__prova p {
+    margin: 0;
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+  }
+
+  .hero__prova strong {
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text);
+  }
+
+  .hero__estrela {
+    display: inline-block;
+    width: 0.9rem;
+    margin-right: var(--space-1);
+    vertical-align: -0.1em;
+    fill: var(--color-text);
+  }
+
+  .hero__miniaturas {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .hero__miniaturas li + li {
+    margin-left: calc(var(--space-3) * -1);
+  }
+
+  .hero__miniaturas :global(img) {
+    width: 2.5rem;
+    height: 2.5rem;
+    border: 2px solid var(--color-bg);
+    border-radius: var(--radius-pill);
+    object-fit: cover;
+  }
+
+  /* Visual: arco preenchido + arco em linha + cartões flutuantes */
+  .hero__visual {
+    position: relative;
     width: 100%;
-    border-radius: var(--radius-md);
+    max-width: 34rem;
+    margin-inline: auto;
+    aspect-ratio: 4 / 5;
   }
 
-  @media (width >= 48rem) {
+  .hero__arco-linha {
+    position: absolute;
+    inset: 0;
+    border: 1.5px solid var(--color-arch-line);
+    border-bottom: 0;
+    border-radius: var(--radius-pill) var(--radius-pill) 0 0 / 50% 50% 0 0;
+  }
+
+  .hero__arco {
+    position: absolute;
+    inset: 7% 4% 0;
+    border-radius: var(--radius-pill) var(--radius-pill) 0 0 / 50% 50% 0 0;
+    background: var(--color-blush);
+  }
+
+  .hero__arco :global(.hero__foto img),
+  .hero__arco :global(img.hero__foto) {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 112%;
+    max-width: none;
+    height: auto;
+    transform: translateX(-50%);
+  }
+
+  .hero :global(.hero__brilho) {
+    position: absolute;
+    top: 9%;
+    left: 6%;
+    width: 2.25rem;
+    color: var(--color-rose);
+  }
+
+  .hero :global(.hero__espaco) {
+    position: absolute;
+    top: 12%;
+    right: -2%;
+    width: 30%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    border: 4px solid var(--color-bg);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+  }
+
+  .hero__experiencia {
+    position: absolute;
+    top: 47%;
+    right: -2%;
+    margin: 0;
+    padding: var(--space-4) var(--space-5);
+    border-radius: var(--radius-md);
+    background: var(--color-butter);
+    box-shadow: var(--shadow-md);
+    font-size: var(--font-size-xs);
+    line-height: 1.3;
+    color: var(--color-text-muted);
+  }
+
+  .hero__experiencia-numero {
+    display: block;
+    font-variant-numeric: lining-nums;
+    margin-bottom: var(--space-2);
+    font-family: var(--font-display);
+    font-size: var(--font-size-xl);
+    line-height: 1;
+    color: var(--color-rose-strong);
+  }
+
+  .hero__profissional {
+    position: absolute;
+    bottom: 9%;
+    left: -2%;
+    display: grid;
+    gap: var(--space-1);
+    margin: 0;
+    padding: var(--space-4) var(--space-6);
+    border-radius: var(--radius-lg);
+    background: var(--color-bg);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .hero__profissional-nome {
+    font-family: var(--font-display);
+    font-size: var(--font-size-name);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.1;
+    color: var(--color-text);
+  }
+
+  .hero__profissional-titulo {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+  }
+
+  @media (width >= 64rem) {
+    .hero {
+      padding-block: var(--space-12) var(--space-16);
+    }
+
     .hero__grid {
       grid-template-columns: 1fr 1fr;
+      gap: var(--space-12);
+    }
+
+    .hero__acoes {
+      flex-direction: row;
+      align-items: center;
+      gap: var(--space-6);
+    }
+
+    .hero__prova {
+      order: 0;
+    }
+
+    .hero__prova p {
+      font-size: var(--font-size-sm);
+      line-height: 1.35;
+    }
+
+    .hero__ponto {
+      display: none;
+    }
+
+    .hero__total {
+      display: block;
+    }
+
+    .hero__experiencia,
+    .hero :global(.hero__espaco) {
+      right: -4%;
+    }
+
+    .hero__experiencia {
+      top: 56%;
+    }
+
+    .hero__profissional {
+      left: -6%;
     }
   }
 </style>

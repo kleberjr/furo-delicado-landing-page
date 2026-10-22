@@ -1,0 +1,95 @@
+---
+import TituloSecao from "./TituloSecao.astro";
+import type { Site } from "../content/site";
+
+interface Props {
+  comoFunciona: Site["comoFunciona"];
+}
+
+const { comoFunciona } = Astro.props;
+---
+
+<section class="section section--alt" aria-labelledby="como-titulo">
+  <div class="container">
+    <TituloSecao
+      id="como-titulo"
+      eyebrow={comoFunciona.eyebrow}
+      titulo={comoFunciona.titulo}
+      centro
+    />
+    <ol class="passos" role="list">
+      {comoFunciona.passos.map((p, i) => (
+        <li class="passo">
+          <span class="passo__numero" aria-hidden="true">
+            {String(i + 1).padStart(2, "0")}
+          </span>
+          <h3>{p.titulo}</h3>
+          <p>{p.texto}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .passos {
+    display: grid;
+    gap: var(--space-5);
+    margin: var(--space-10) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .passo {
+    padding: var(--space-8) var(--space-6);
+    border-radius: var(--radius-lg);
+    background: var(--color-card);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .passo__numero {
+    display: block;
+    margin-bottom: var(--space-4);
+    font-family: var(--font-display);
+    font-size: var(--font-size-2xl);
+    font-style: italic;
+    line-height: 1;
+    color: var(--color-rose);
+  }
+
+  .passo h3 {
+    margin-bottom: var(--space-2);
+    font-size: var(--font-size-xl);
+    overflow-wrap: break-word;
+  }
+
+  .passo p {
+    margin: 0;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+  }
+
+  @media (width >= 48rem) {
+    .passos {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .passo {
+      padding-inline: var(--space-5);
+    }
+
+    .passo h3 {
+      font-size: var(--font-size-lg);
+    }
+  }
+
+  @media (width >= 64rem) {
+    .passo {
+      padding-inline: var(--space-6);
+    }
+
+    .passo h3 {
+      font-size: var(--font-size-xl);
+    }
+  }
+</style>

@@ -16,6 +16,15 @@ for (const { nome, caminho } of PAGINAS) {
       await page.setViewportSize({ width: largura, height: largura < 768 ? 800 : 900 });
       await page.goto(caminho, { waitUntil: "networkidle" });
       await page.evaluate(() => document.fonts.ready);
+      // Rola até o fim para carregar as imagens com loading="lazy" antes da captura.
+      await page.evaluate(async () => {
+        for (let y = 0; y < document.body.scrollHeight; y += 400) {
+          window.scrollTo(0, y);
+          await new Promise((r) => setTimeout(r, 50));
+        }
+        window.scrollTo(0, 0);
+      });
+      await page.waitForLoadState("networkidle");
       await page.screenshot({
         path: `tests/visual/${nome}-${largura}.png`,
         fullPage: true,

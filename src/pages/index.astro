@@ -1,22 +1,68 @@
 ---
+import { getImage } from "astro:assets";
+import Avaliacoes from "../components/Avaliacoes.astro";
+import Cabecalho from "../components/Cabecalho.astro";
+import ComoFunciona from "../components/ComoFunciona.astro";
 import Contato from "../components/Contato.astro";
+import Diferenciais from "../components/Diferenciais.astro";
+import Faq from "../components/Faq.astro";
 import Hero from "../components/Hero.astro";
 import Rodape from "../components/Rodape.astro";
+import Servicos from "../components/Servicos.astro";
+import Sobre from "../components/Sobre.astro";
+import WhatsappFlutuante from "../components/WhatsappFlutuante.astro";
 import { site } from "../content/site";
 import Base from "../layouts/Base.astro";
 import { whatsappUrl } from "../lib/contato";
+import { imagem } from "../lib/imagens";
+
+const wpp = whatsappUrl(site.contato.whatsapp, site.contato.mensagemWhatsapp);
+const fotoNegocio = await getImage({ src: imagem(site.seo.imagem), width: 1200, format: "jpg" });
+
+// JSON-LD só com dados reais do briefing (sem nota agregada: avaliações próprias não são elegíveis).
+const { contato, seo } = site;
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": seo.tipoNegocio,
+  name: site.nome,
+  description: seo.description,
+  url: seo.url,
+  image: new URL(fotoNegocio.src, seo.url).href,
+  telephone: contato.telefone ?? contato.whatsapp,
+  priceRange: site.servicos.preco,
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: contato.enderecoPostal.rua,
+    addressLocality: contato.enderecoPostal.cidade,
+    addressRegion: contato.enderecoPostal.uf,
+    postalCode: contato.enderecoPostal.cep,
+    addressCountry: "BR",
+  },
+  hasMap: contato.mapaUrl,
+  areaServed: seo.areaAtendida,
+  sameAs: [contato.instagram.url],
+};
+// "<" escapado: o JSON nunca fecha a tag <script>.
+const jsonLdTexto = JSON.stringify(jsonLd).replace(/</g, "\\u003c");
 ---
 
 <Base title={site.seo.title} description={site.seo.description} caminho="/">
-  <Hero
+  <script slot="head" type="application/ld+json" set:html={jsonLdTexto} />
+  <Cabecalho slot="topo" logo={site.logo} nav={site.nav} cta={site.ctaCurto} ctaHref={wpp} />
+  <Hero hero={site.hero} ctaHref={wpp} />
+  <Servicos servicos={site.servicos} />
+  <Diferenciais diferenciais={site.diferenciais} />
+  <Sobre sobre={site.sobre} />
+  <ComoFunciona comoFunciona={site.comoFunciona} />
+  <Avaliacoes avaliacoes={site.avaliacoes} googleUrl={site.contato.mapaUrl} />
+  <Faq faq={site.faq} />
+  <Contato secao={site.secaoContato} contato={site.contato} />
+  <WhatsappFlutuante slot="fim" href={wpp} rotulo={site.flutuante} />
+  <Rodape
+    slot="fim"
+    rodape={site.rodape}
+    contato={site.contato}
+    empresa={site.empresa}
     nome={site.nome}
-    headline={site.hero.headline}
-    subheadline={site.hero.subheadline}
-    cta={site.hero.cta}
-    ctaHref={whatsappUrl(site.contato.whatsapp, site.contato.mensagemWhatsapp)}
-    redutor={site.hero.redutor}
-    foto={site.hero.imagem}
   />
-  <Contato contato={site.contato} />
-  <Rodape slot="fim" razaoSocial={site.empresa.razaoSocial} cnpj={site.empresa.cnpj} />
 </Base>

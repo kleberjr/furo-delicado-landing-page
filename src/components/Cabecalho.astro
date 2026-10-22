@@ -1,0 +1,115 @@
+---
+import { Image } from "astro:assets";
+import { imagem } from "../lib/imagens";
+
+interface Props {
+  logo: { arquivo: string; alt: string };
+  nav: { rotulo: string; href: string }[];
+  cta: string;
+  ctaHref: string;
+}
+
+const { logo, nav, cta, ctaHref } = Astro.props;
+---
+
+<header class="cabecalho">
+  <div class="container cabecalho__barra">
+    <a class="cabecalho__logo" href="/">
+      <Image
+        src={imagem(logo.arquivo)}
+        alt={logo.alt}
+        widths={[120, 240, 360]}
+        sizes="7.5rem"
+        loading="eager"
+      />
+    </a>
+    <nav class="cabecalho__nav" aria-label="Seções">
+      <ul role="list">
+        {nav.map((item) => (
+          <li>
+            <a href={item.href}>{item.rotulo}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+    <a
+      class="btn btn--rose cabecalho__cta"
+      href={ctaHref}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      {cta}
+    </a>
+  </div>
+</header>
+
+<style>
+  .cabecalho {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-header);
+    background: var(--color-bg);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .cabecalho__barra {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-6);
+    min-height: var(--header-height);
+  }
+
+  .cabecalho__logo {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--tap-min);
+  }
+
+  .cabecalho__logo :global(img) {
+    width: 6.5rem;
+    height: auto;
+  }
+
+  .cabecalho__nav {
+    display: none;
+  }
+
+  .cabecalho__nav ul {
+    display: flex;
+    gap: var(--space-8);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .cabecalho__nav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--tap-min);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-regular);
+    color: var(--color-text-muted);
+    text-decoration: none;
+  }
+
+  .cabecalho__nav a:hover {
+    color: var(--color-rose-strong);
+  }
+
+  .cabecalho__cta {
+    min-height: 2.75rem;
+    padding-inline: var(--space-5);
+    font-size: var(--font-size-sm);
+  }
+
+  @media (width >= 56rem) {
+    .cabecalho__logo :global(img) {
+      width: 7.5rem;
+    }
+
+    .cabecalho__nav {
+      display: block;
+    }
+  }
+</style>

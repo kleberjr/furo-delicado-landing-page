@@ -1,11 +1,12 @@
 ---
 /**
- * Modelo de Política de Privacidade para uma landing page sem formulário, cookies ou analytics.
- * Ao adicionar formulário, analytics, mapa embutido ou cookies, atualize este texto.
+ * Política de Privacidade: sem formulário, cookies próprios ou analytics; mapa do Google só sob
+ * clique. Ao adicionar formulário, analytics ou cookies, atualize este texto.
  * O cliente deve revisar o texto final com seu assessor jurídico.
  */
 import Base from "../layouts/Base.astro";
 import { site } from "../content/site";
+import { formatarTelefoneBR, whatsappUrl } from "../lib/contato";
 
 const { nome, empresa, contato, privacidade } = site;
 const data = new Date(`${privacidade.atualizadaEm}T12:00:00Z`).toLocaleDateString("pt-BR", {
@@ -25,30 +26,44 @@ const data = new Date(`${privacidade.atualizadaEm}T12:00:00Z`).toLocaleDateStrin
 
       <h2>Quem é o controlador</h2>
       <p>
-        {empresa.razaoSocial}, CNPJ {empresa.cnpj}, {contato.endereco}. Contato para assuntos de
-        privacidade: <a href={`mailto:${privacidade.email}`}>{privacidade.email}</a>.
+        {empresa.nomeCompleto}, {empresa.qualificacao}
+        {empresa.cnpj && <>, CNPJ {empresa.cnpj}</>}, {contato.endereco}. Contato para assuntos de
+        privacidade:{" "}
+        {privacidade.email ? (
+          <a href={`mailto:${privacidade.email}`}>{privacidade.email}</a>
+        ) : (
+          <a href={whatsappUrl(contato.whatsapp)} target="_blank" rel="noopener noreferrer">
+            WhatsApp {formatarTelefoneBR(contato.whatsapp)}
+          </a>
+        )}
+        .
       </p>
 
       <h2>Quais dados este site coleta</h2>
       <p>
-        Este site não tem formulários, não usa cookies e não usa ferramentas de análise de
-        audiência. O provedor de hospedagem pode registrar dados técnicos de acesso (endereço IP,
+        Este site não tem formulários, não grava cookies próprios e não usa ferramentas de análise
+        de audiência. O provedor de hospedagem pode registrar dados técnicos de acesso (endereço IP,
         data e hora, navegador) por segurança, com base no legítimo interesse (art. 7º, IX, da
         LGPD), pelo prazo exigido pelo Marco Civil da Internet.
       </p>
 
       <h2>WhatsApp, telefone e mapa</h2>
       <p>
-        Ao clicar em WhatsApp, telefone ou no endereço, você sai deste site. As mensagens são usadas
-        só para responder ao seu contato. WhatsApp e Google Maps têm políticas de privacidade
-        próprias.
+        Ao clicar em WhatsApp, telefone, Instagram ou no endereço, você sai deste site. As mensagens
+        são usadas só para responder ao seu contato e agendar o atendimento.
+      </p>
+      <p>
+        O mapa da página de contato só é carregado se você clicar em “Ver mapa”. A partir desse
+        clique, o Google Maps é exibido dentro da página e o Google pode receber dados técnicos do
+        seu acesso e gravar cookies próprios. WhatsApp, Instagram e Google Maps têm políticas de
+        privacidade próprias.
       </p>
 
       <h2>Seus direitos</h2>
       <p>
         Você pode pedir confirmação, acesso, correção, anonimização, portabilidade ou eliminação dos
-        seus dados (art. 18 da LGPD) pelo e-mail acima, e reclamar à Autoridade Nacional de Proteção
-        de Dados (ANPD).
+        seus dados (art. 18 da LGPD) pelo contato acima, e reclamar à Autoridade Nacional de
+        Proteção de Dados (ANPD).
       </p>
 
       <p>

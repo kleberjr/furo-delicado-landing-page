@@ -1,7 +1,10 @@
 ---
 import "../styles/global.css";
-import interUrl from "../assets/fonts/inter-latin-wght-normal.woff2?url";
+import displayUrl from "../assets/fonts/cormorant-garamond-latin-wght-normal.woff2?url";
+import sansUrl from "../assets/fonts/jost-latin-wght-normal.woff2?url";
+import { getImage } from "astro:assets";
 import { site } from "../content/site";
+import { imagem } from "../lib/imagens";
 
 interface Props {
   title: string;
@@ -12,6 +15,9 @@ interface Props {
 
 const { title, description, caminho } = Astro.props;
 const canonical = new URL(caminho, site.seo.url).href;
+const icone = await getImage({ src: imagem(site.icone), width: 64, format: "png" });
+const iconeApple = await getImage({ src: imagem(site.icone), width: 180, format: "png" });
+const og = await getImage({ src: imagem(site.seo.imagem), width: 1200, format: "jpg" });
 ---
 
 <!doctype html>
@@ -19,22 +25,29 @@ const canonical = new URL(caminho, site.seo.url).href;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Mesmo valor de --color-bg (tokens.css): meta não lê variáveis CSS. -->
+    <meta name="theme-color" content="#fff9f3" />
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    <link rel="preload" href={interUrl} as="font" type="font/woff2" crossorigin />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preload" href={displayUrl} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={sansUrl} as="font" type="font/woff2" crossorigin />
+    <link rel="icon" href={icone.src} type="image/png" />
+    <link rel="apple-touch-icon" href={iconeApple.src} />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="pt_BR" />
     <meta property="og:site_name" content={site.nome} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={new URL(og.src, site.seo.url).href} />
+    <slot name="head" />
   </head>
   <body>
     <a class="skip-link" href="#conteudo">
       Pular para o conteúdo
     </a>
+    <slot name="topo" />
     <main id="conteudo" tabindex="-1">
       <slot />
     </main>

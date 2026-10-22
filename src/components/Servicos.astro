@@ -1,0 +1,178 @@
+---
+import { Picture } from "astro:assets";
+import TituloSecao from "./TituloSecao.astro";
+import { imagem } from "../lib/imagens";
+import type { Site } from "../content/site";
+
+interface Props {
+  servicos: Site["servicos"];
+}
+
+const { servicos } = Astro.props;
+---
+
+<section id="servicos" class="section section--alt" aria-labelledby="servicos-titulo">
+  <div class="container">
+    <div class="servicos__topo">
+      <TituloSecao id="servicos-titulo" eyebrow={servicos.eyebrow} titulo={servicos.titulo} />
+      <p class="servicos__texto">{servicos.texto}</p>
+    </div>
+
+    <ul class="servicos__cartoes" role="list">
+      {servicos.cartoes.map((c) => (
+        <li class="cartao">
+          <Picture
+            class="cartao__foto"
+            src={imagem(c.foto.arquivo)}
+            alt={c.foto.alt}
+            formats={["avif", "webp"]}
+            fallbackFormat="webp"
+            widths={[360, 540, 720]}
+            sizes="(min-width: 64rem) 22rem, (min-width: 48rem) 31vw, 90vw"
+          />
+          <div class="cartao__corpo">
+            <div class="cartao__cabeca">
+              <h3>{c.titulo}</h3>
+              <span class:list={["cartao__preco", `pastel--${c.cor}`]}>{servicos.preco}</span>
+            </div>
+            <p>{c.texto}</p>
+          </div>
+        </li>
+      ))}
+    </ul>
+
+    <div class="servicos__tipos">
+      <h3>{servicos.tiposTitulo}</h3>
+      <ul role="list">
+        {servicos.tipos.map((t) => (
+          <li>{t}</li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .servicos__topo {
+    display: grid;
+    gap: var(--space-4);
+    margin-bottom: var(--space-10);
+  }
+
+  .servicos__texto {
+    max-width: 26rem;
+    margin: 0;
+    color: var(--color-text-muted);
+  }
+
+  .servicos__cartoes {
+    display: grid;
+    gap: var(--space-6);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .cartao {
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    background: var(--color-card);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .cartao :global(.cartao__foto) {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+  }
+
+  .cartao__corpo {
+    padding: var(--space-5) var(--space-6) var(--space-6);
+  }
+
+  .cartao__cabeca {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2);
+    margin-bottom: var(--space-3);
+  }
+
+  .cartao h3 {
+    margin: 0;
+    font-size: var(--font-size-xl);
+  }
+
+  .cartao__preco {
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-pill);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-regular);
+    color: var(--color-text);
+  }
+
+  .cartao p {
+    margin: 0;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+  }
+
+  .servicos__tipos {
+    margin-top: var(--space-12);
+    text-align: center;
+  }
+
+  .servicos__tipos h3 {
+    margin-bottom: var(--space-5);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--color-rose-strong);
+  }
+
+  .servicos__tipos ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .servicos__tipos li {
+    padding: var(--space-2) var(--space-4);
+    border: 1px solid var(--color-arch-line);
+    border-radius: var(--radius-pill);
+    background: var(--color-card);
+    font-size: var(--font-size-sm);
+  }
+
+  @media (width >= 48rem) {
+    .servicos__cartoes {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--space-4);
+    }
+
+    .cartao__corpo {
+      padding-inline: var(--space-5);
+    }
+  }
+
+  @media (width >= 64rem) {
+    .servicos__topo {
+      grid-template-columns: 1fr auto;
+      align-items: end;
+    }
+
+    .servicos__cartoes {
+      gap: var(--space-6);
+    }
+
+    .cartao__corpo {
+      padding-inline: var(--space-6);
+    }
+  }
+</style>

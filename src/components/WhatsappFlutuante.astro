@@ -1,0 +1,54 @@
+---
+import Icone from "./Icone.astro";
+
+interface Props {
+  href: string;
+  rotulo: string;
+}
+
+const { href, rotulo } = Astro.props;
+---
+
+<a class="flutuante" href={href} target="_blank" rel="noopener noreferrer" aria-label={rotulo}>
+  <Icone nome="whatsapp" class="flutuante__icone" />
+</a>
+
+<style>
+  .flutuante {
+    position: fixed;
+    right: var(--space-4);
+    bottom: max(var(--space-4), env(safe-area-inset-bottom));
+    z-index: var(--z-float);
+    display: grid;
+    place-items: center;
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: var(--radius-pill);
+    background: var(--color-rose-strong);
+    color: var(--color-on-rose);
+    box-shadow: var(--shadow-lg);
+    transition: transform 0.2s var(--ease-out);
+  }
+
+  .flutuante:hover {
+    background: var(--color-plum);
+    transform: scale(1.05);
+  }
+
+  .flutuante:focus-visible {
+    outline-offset: 3px;
+  }
+
+  .flutuante :global(.flutuante__icone) {
+    width: 1.75rem;
+  }
+
+  @media (width >= 64rem) {
+    .flutuante {
+      right: var(--space-8);
+      bottom: var(--space-8);
+      width: 4rem;
+      height: 4rem;
+    }
+  }
+</style>

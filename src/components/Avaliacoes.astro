@@ -1,0 +1,147 @@
+---
+import Icone from "./Icone.astro";
+import TituloSecao from "./TituloSecao.astro";
+import type { Site } from "../content/site";
+
+interface Props {
+  avaliacoes: Site["avaliacoes"];
+  googleUrl: string;
+}
+
+const { avaliacoes, googleUrl } = Astro.props;
+---
+
+<section id="avaliacoes" class="section" aria-labelledby="avaliacoes-titulo">
+  <div class="container">
+    <TituloSecao
+      id="avaliacoes-titulo"
+      eyebrow={avaliacoes.eyebrow}
+      titulo={avaliacoes.titulo}
+      centro
+    />
+    <p class="avaliacoes__resumo">
+      <svg class="avaliacoes__estrela" viewBox="0 0 20 20" aria-hidden="true">
+        <path d="m10 1.5 2.6 5.6 6.1.7-4.5 4.2 1.2 6L10 15l-5.4 3 1.2-6-4.5-4.2 6.1-.7z"></path>
+      </svg>
+      {avaliacoes.resumo}
+    </p>
+
+    <ul class="avaliacoes" role="list">
+      {avaliacoes.depoimentos.map((d, i) => (
+        <li class:list={["depoimento", { "depoimento--rose": i % 3 === 1 }]}>
+          <blockquote>
+            <p>“{d.texto}”</p>
+          </blockquote>
+          <p class="depoimento__autor">
+            {d.autor}
+            {d.contexto && <span> · {d.contexto}</span>}
+          </p>
+        </li>
+      ))}
+    </ul>
+
+    <p class="avaliacoes__link">
+      <a href={googleUrl} target="_blank" rel="noopener noreferrer">
+        {avaliacoes.linkGoogle}
+        <Icone nome="seta" class="avaliacoes__seta" />
+      </a>
+    </p>
+  </div>
+</section>
+
+<style>
+  .avaliacoes__resumo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    margin: var(--space-4) 0 0;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+  }
+
+  .avaliacoes__estrela {
+    width: 1rem;
+    fill: var(--color-text);
+  }
+
+  .avaliacoes {
+    display: grid;
+    gap: var(--space-5);
+    margin: var(--space-10) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .depoimento {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: var(--space-6);
+    padding: var(--space-8) var(--space-6);
+    border-radius: var(--radius-lg);
+    background: var(--color-card);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .depoimento blockquote {
+    margin: 0;
+  }
+
+  .depoimento blockquote p {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: var(--font-size-lg);
+    line-height: 1.45;
+  }
+
+  .depoimento__autor {
+    margin: 0;
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: 0.04em;
+    color: var(--color-text-muted);
+  }
+
+  .depoimento--rose {
+    background: var(--color-rose-strong);
+    color: var(--color-on-rose);
+    box-shadow: var(--shadow-md);
+  }
+
+  .depoimento--rose .depoimento__autor {
+    color: var(--color-on-rose-muted);
+  }
+
+  .avaliacoes__link {
+    margin: var(--space-8) 0 0;
+    text-align: center;
+  }
+
+  .avaliacoes__link a {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: var(--tap-min);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-regular);
+    color: var(--color-rose-strong);
+    text-underline-offset: 0.2em;
+  }
+
+  .avaliacoes__link :global(.avaliacoes__seta) {
+    width: 1rem;
+  }
+
+  @media (width >= 48rem) {
+    .avaliacoes {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (width >= 64rem) {
+    .avaliacoes {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>
