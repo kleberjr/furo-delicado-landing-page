@@ -7,6 +7,7 @@ import Contato from "../components/Contato.astro";
 import Diferenciais from "../components/Diferenciais.astro";
 import Faq from "../components/Faq.astro";
 import Hero from "../components/Hero.astro";
+import Lobuloplastia from "../components/Lobuloplastia.astro";
 import Rodape from "../components/Rodape.astro";
 import Servicos from "../components/Servicos.astro";
 import Sobre from "../components/Sobre.astro";
@@ -51,6 +52,10 @@ const jsonLdTexto = JSON.stringify(jsonLd).replace(/</g, "\\u003c");
   <Cabecalho slot="topo" logo={site.logo} nav={site.nav} cta={site.ctaCurto} ctaHref={wpp} />
   <Hero hero={site.hero} ctaHref={wpp} />
   <Servicos servicos={site.servicos} />
+  <Lobuloplastia
+    lobuloplastia={site.lobuloplastia}
+    ctaHref={whatsappUrl(site.contato.whatsapp, site.lobuloplastia.mensagemWhatsapp)}
+  />
   <Diferenciais diferenciais={site.diferenciais} />
   <Sobre sobre={site.sobre} />
   <ComoFunciona comoFunciona={site.comoFunciona} />
@@ -58,11 +63,5 @@ const jsonLdTexto = JSON.stringify(jsonLd).replace(/</g, "\\u003c");
   <Faq faq={site.faq} />
   <Contato secao={site.secaoContato} contato={site.contato} />
   <WhatsappFlutuante slot="fim" href={wpp} rotulo={site.flutuante} />
-  <Rodape
-    slot="fim"
-    rodape={site.rodape}
-    contato={site.contato}
-    empresa={site.empresa}
-    nome={site.nome}
-  />
+  <Rodape slot="fim" rodape={site.rodape} empresa={site.empresa} nome={site.nome} />
 </Base>

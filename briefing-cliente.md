@@ -6,6 +6,7 @@ negocio:
   profissional:
     nome: "Luciana de Lurdes"
     formacao:
+      - "Graduação em enfermagem"
       - "Técnica em enfermagem"
       - "Formação Piercing Humanizado - Método Aryanne Cantarino (técnicas Body Piercing e System 75; habilitação em Primeiro Brinquinho em bebês e Body Piercing, método humanizado)"
       - "Curso online Técnica Piercings Australianos (8 h) - Just Paulinha"
@@ -14,8 +15,8 @@ negocio:
     coren: "não exibir (decisão do cliente)"
   segmento: "estúdio de perfuração auricular e piercing (beleza com cuidado de saúde)" # Google: "Centro de saúde e beleza"
   cidade_bairro: "Planaltina - DF (Setor Residencial Leste / Buritis I)"
-  publico_alvo: "pais de recém-nascidos (a partir de 15 dias) e crianças, e adultos que querem furar a orelha, o nariz ou o mamilo; dor principal: medo de dor, trauma e infecção"
-  diferencial: "perfuração sem dor e sem traumas (afirmação do cliente, confirmada por várias avaliações), com cicatrização segura e acompanhamento pós-perfuração; joias de titânio da própria profissional; material esterilizado em autoclave; profissional técnica em enfermagem"
+  publico_alvo: "pais de recém-nascidos (a partir de 15 dias; não atende prematuros) e crianças, e adultos que querem furar a orelha, o nariz ou o mamilo; dor principal: medo de dor, trauma e infecção"
+  diferencial: "perfuração sem dor e sem traumas (afirmação do cliente, confirmada por várias avaliações), com cicatrização segura e acompanhamento pós-perfuração; joias da própria profissional inclusas no valor; material esterilizado em autoclave; profissional técnica e graduada em enfermagem"
   objecoes_comuns: # extraídas de avaliacoes.md
     - "Dói? Tenho medo de agulha."
     - "Posso furar a orelha da minha recém-nascida? Ela vai chorar?"
@@ -23,7 +24,7 @@ negocio:
     - "Vai ficar torto ou no lugar errado?" # cliente que já tinha se decepcionado em lugar mais barato
     - "O material é esterilizado? É higiênico?"
     - "E a cicatrização? Vou ter suporte depois?"
-    - "Tem horário que encaixe na minha rotina? Atende em casa?"
+    - "Tem horário que encaixe na minha rotina?"
     - "Por que pagar mais do que em outro lugar?"
   palavras_dos_clientes: # trechos literais de avaliacoes.md
     - "realmente é zero dor"
@@ -48,7 +49,7 @@ conversao:
   secundaria: "mapa do Google incorporado, carregado só ao clicar (sem cookies antes do clique), com botão 'Traçar rota'"
 conteudo:
   servicos:
-    - nome: "Perfuração em recém-nascidos (a partir de 15 dias)"
+    - nome: "Perfuração em recém-nascidos (a partir de 15 dias; não atende prematuros)"
     - nome: "Perfuração em crianças"
     - nome: "Perfuração em adultos"
     - nome: "Orelha"
@@ -59,14 +60,22 @@ conteudo:
           tragus,
           helix,
           mid-helix,
+          flat,
+          rook,
           conch,
           daith,
           transversal,
+          australianos,
         ]
     - nome: "Aba nasal"
     - nome: "Mamilo"
-  preco: "perfurações a partir de R$ 100, já incluindo a joia de titânio e o acompanhamento pós-perfuração"
-  joias: "titânio, da própria profissional; não perfura com joias trazidas pelo cliente"
+    - nome: "Lobuloplastia" # correção de lóbulo rasgado; fotos de antes e depois enviadas pelo usuário
+  preco: # servicos.md; joia e acompanhamento pós-perfuração inclusos
+    bebes_ate_3_meses: "a partir de R$ 200 (joia de aço folheado a ouro 24k)"
+    bebes_e_criancas_a_partir_de_3_meses: "R$ 250, fixo (joia de aço folheado a ouro 24k)"
+    adultos: "a partir de R$ 100 com joia de aço (ponto de luz); a partir de R$ 150 com joia de titânio (ponto de luz)"
+    lobuloplastia: "a partir de R$ 380"
+  joias: "da própria profissional (aço folheado a ouro 24k para bebês e crianças; aço ou titânio para adultos); não perfura com joias trazidas pelo cliente"
   biosseguranca: "material esterilizado em autoclave"
   depoimentos_reais: # avaliações públicas do Google, enviadas pelo cliente (avaliacoes.md); texto literal, sem cortes
     - autor: "Janaína Pereira"
@@ -75,8 +84,6 @@ conteudo:
       texto: "Atendimento humanizado! 💕 Estava com receio de furar a orelhinha da minha bebê, mas foi tudo muito tranquilo. Amei a recepção, o carinho e todo o cuidado que tiveram conosco. Recomendo de olhos fechados!"
     - autor: "Angelita Soares"
       texto: "Pode confiar, sem medo. Atendimento personalizado, com todo cuidado, paciência e preparo. Muito diferente de outros lugares aqui de Planaltina. Indico!"
-    - autor: "Daniele Menegaz"
-      texto: "Maravilhosa! Atendimento em domicílio impecável, cuidadosa, atenciosa e profissional. Minha bebê ficou calma, Luciana transmite paz. Muito obrigada, amamos o mimo Deus abençoe!"
     - autor: "Juciely Soraia Trindade"
       texto: "Excelente profissional. Muito cuidadosa, equipamentos bem esterelizados, paciente, atenciosa e muito delicada. Simplesmente amei... Minha bebê não chorou durante o furo... Super recomendo!!!"
     - autor: "Thuany Fernandes"
@@ -88,7 +95,7 @@ conteudo:
     - autor: "Vanessa Gomes"
       texto: "O atendimento da Luciana foi maravilhoso! Ela é muito educada, paciente e tem muito conhecimento! E o suporte após a realização do procedimento é impecável!"
   horario: "somente com agendamento (sem dias e horários fixos)"
-  atendimento_domiciliar: "sim, em Planaltina-DF e região"
+  atendimento_domiciliar: "não; atendimento só no estúdio"
   endereco: "St. Res. Leste, Buritis I, Quadra 03, Lote 41 - Planaltina, Brasília - DF, 73350-305"
   whatsapp: "+5561994552929"
   telefone: "+5561994552929" # mesmo número do WhatsApp

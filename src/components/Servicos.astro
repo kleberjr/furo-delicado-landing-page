@@ -33,7 +33,7 @@ const { servicos } = Astro.props;
           <div class="cartao__corpo">
             <div class="cartao__cabeca">
               <h3>{c.titulo}</h3>
-              <span class:list={["cartao__preco", `pastel--${c.cor}`]}>{servicos.preco}</span>
+              <span class:list={["cartao__preco", `pastel--${c.cor}`]}>{c.preco}</span>
             </div>
             <p>{c.texto}</p>
           </div>

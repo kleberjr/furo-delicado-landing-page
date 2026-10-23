@@ -335,10 +335,17 @@ const { hero, ctaHref } = Astro.props;
       gap: var(--space-12);
     }
 
+    /* Sem espaço para os dois na linha, as avaliações sobem (wrap-reverse), como no layout menor; o
+       botão mantém o tamanho. */
     .hero__acoes {
-      flex-direction: row;
+      flex-flow: row wrap-reverse;
       align-items: center;
-      gap: var(--space-6);
+      gap: var(--space-5) var(--space-6);
+    }
+
+    .hero__acoes .btn {
+      flex: none;
+      white-space: nowrap;
     }
 
     .hero__prova {

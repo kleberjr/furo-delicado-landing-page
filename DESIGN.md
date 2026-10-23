@@ -16,15 +16,15 @@ selos, e com uma seção escura em ameixa.
 - **Selo:** "✦ Furo humanizado" (pílula blush).
 - **Headline (h1):** "Furo de orelha / _sem dor_ e seguro." A palavra em destaque fica em itálico
   rosé e "e seguro." leva um sublinhado desenhado à mão.
-- **Subheadline:** "Para bebês a partir de 15 dias, crianças e adultos em Planaltina-DF, com joia
-  de titânio inclusa."
+- **Subheadline:** "Para bebês a partir de 15 dias, crianças e adultos em Planaltina-DF, com a joia
+  já inclusa."
 - **CTA principal** (`data-cta="primary"`): "Agendar pelo WhatsApp", botão ameixa. Prova social
-  (três miniaturas + "★ 5,0 · 128 avaliações no Google"): ao lado do botão a partir de 64rem;
-  abaixo disso, acima do botão.
+  (três miniaturas + "★ 5,0 · +125 avaliações no Google"): ao lado do botão a partir de 64rem; acima
+  do botão abaixo disso ou quando não couber ao lado (o botão nunca encolhe).
 - **Visual:** arco blush com a Luciana (foto sem fundo), um arco em linha por fora, a estrela de
   quatro pontas, a foto da recepção, o cartão manteiga "5+ anos de experiência" e o cartão do nome.
-  No cartão, o destaque é "Luciana de Lurdes" (`--font-size-name`, display). "Técnica em
-  enfermagem" vai embaixo, pequeno e discreto.
+  No cartão, o destaque é "Luciana de Lurdes" (`--font-size-name`, display). "Técnica e
+  graduada em enfermagem" vai embaixo, pequeno e discreto.
 - **Cabeçalho fixo:** o logo oficial completo (monograma + nome + assinatura) em rosé, a navegação
   (só a partir de 56rem) e o botão "Agendar".
 
@@ -73,13 +73,19 @@ Componentes compartilhados: `.btn` (ameixa), `.btn--rose`, `.btn--lg`, `.eyebrow
 1. **Cabeçalho** fixo: logo, navegação e "Agendar".
 2. **Hero:** como descrito acima. Sem faixa rolando depois dele (pedido do cliente).
 3. **Serviços** (`#servicos`, creme escuro): "Um cuidado para _cada fase_". Três cartões brancos
-   com foto: bebês e crianças, lóbulo e cartilagem, cada um com selo pastel "a partir de R$ 100"
-   abaixo do título. Embaixo, chips com todos os tipos de furo, inclusive aba nasal e mamilo.
-4. **Diferenciais** (creme): quatro cartões pastel (sálvia, manteiga, blush, lilás) com ícone.
-   Joia de titânio inclusa, material esterilizado em autoclave, acompanhamento pós-perfuração,
-   atendimento a domicílio.
+   com foto, um por público: bebês até 3 meses, bebês e crianças a partir de 3 meses, adultos,
+   cada um com selo pastel do próprio preço abaixo do título. Embaixo, chips com todos os tipos de furo, inclusive aba nasal e mamilo.
+   3b. **Lobuloplastia** (`#lobuloplastia`, continua o fundo de Serviços, sem espaço em cima): bloco
+   lilás com cantos `xl`. Texto, preço em display ("a partir de" pequeno, "R$ 380" grande) e botão
+   WhatsApp com mensagem própria. Ao lado (abaixo no celular): antes e depois em duas polaroides
+   inclinadas e sobrepostas, legendas em itálico, seta desenhada à mão e a estrela da marca; no
+   hover elas se endireitam e se afastam (só CSS). Abaixo de 64rem a ordem é texto, fotos, preço e
+   botão.
+4. **Diferenciais** (creme): três cartões pastel (sálvia, manteiga, blush) com ícone, lado a lado
+   no desktop. Joia inclusa no valor, material esterilizado em autoclave, acompanhamento
+   pós-perfuração.
 5. **Sobre a Luciana** (`#sobre`, ameixa): foto com cantos `xl`, selo circular rosé "5+ anos",
-   texto curto, formação e números reais (5,0 no Google, 128 avaliações).
+   texto curto, formação e números reais (5,0 no Google, +125 avaliações; "+125" para não ficar desatualizado).
 6. **Como funciona** (creme escuro): três passos em cartões brancos, com números "01–03" em itálico
    rosé.
 7. **Avaliações** (`#avaliacoes`, creme): "Quem furou, _recomenda_". Seis depoimentos reais,
@@ -88,11 +94,12 @@ Componentes compartilhados: `.btn` (ameixa), `.btn--rose`, `.btn--lg`, `.eyebrow
    objeções do briefing.
 9. **Contato** (`#contato`, **pronto**): bloco blush com cantos `xl`. À esquerda: eyebrow, "Vamos
    marcar o seu _furo_?", texto, botão WhatsApp (ameixa, com ícone) e telefone (pílula com
-   contorno), e um cartão creme com endereço, "Somente com agendamento · no estúdio ou a domicílio"
+   contorno), e um cartão creme com endereço, "Somente com agendamento · no estúdio"
    e Instagram, cada item com ícone rosé. À direita, ou abaixo no celular: fachada do mapa (grade
    sutil, pino rosé, "Ver mapa"). O iframe do Google só carrega no clique. Embaixo, o link "Traçar
    rota no Google Maps".
-10. **Rodapé** ameixa: logo completo, Instagram, Política de Privacidade.
+10. **Rodapé** ameixa, enxuto (o Contato logo acima já tem endereço, telefone e Instagram): uma
+    linha baixa com "© ano Furo Delicado · Luciana de Lurdes" e Política de Privacidade.
 
 **Botão flutuante do WhatsApp** (**pronto**): círculo rosé forte de 56px (64px no desktop) no canto
 inferior direito, fixo, com o ícone do WhatsApp em branco e `aria-label`.

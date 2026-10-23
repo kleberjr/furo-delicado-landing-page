@@ -1,0 +1,253 @@
+---
+import { Picture } from "astro:assets";
+import Brilho from "./Brilho.astro";
+import Icone from "./Icone.astro";
+import TituloSecao from "./TituloSecao.astro";
+import { imagem } from "../lib/imagens";
+import type { Site } from "../content/site";
+
+interface Props {
+  lobuloplastia: Site["lobuloplastia"];
+  ctaHref: string;
+}
+
+const { lobuloplastia, ctaHref } = Astro.props;
+const fotos = [
+  { ...lobuloplastia.antes, classe: "polaroid--antes" },
+  { ...lobuloplastia.depois, classe: "polaroid--depois" },
+];
+---
+
+<section
+  id="lobuloplastia"
+  class="section section--alt lobuloplastia"
+  aria-labelledby="lobuloplastia-titulo"
+>
+  <div class="container">
+    <div class="lobulo pastel--lilac">
+      <div class="lobulo__texto">
+        <TituloSecao
+          id="lobuloplastia-titulo"
+          eyebrow={lobuloplastia.eyebrow}
+          titulo={lobuloplastia.titulo}
+        />
+        {lobuloplastia.texto.map((t) => (
+          <p>{t}</p>
+        ))}
+      </div>
+
+      <div class="lobulo__fotos">
+        {fotos.map((f) => (
+          <figure class:list={["polaroid", f.classe]}>
+            <Picture
+              src={imagem(f.arquivo)}
+              alt={f.alt}
+              formats={["avif", "webp"]}
+              fallbackFormat="webp"
+              widths={[240, 360, 480, 720]}
+              sizes="(min-width: 64rem) 16rem, 42vw"
+            />
+            <figcaption>{f.legenda}</figcaption>
+          </figure>
+        ))}
+        <svg class="lobulo__seta" viewBox="0 0 120 60" aria-hidden="true">
+          <path d="M6 44C26 12 74 4 108 30"></path>
+          <path d="M94 28 108 30 103 17"></path>
+        </svg>
+        <Brilho class="lobulo__brilho" />
+      </div>
+
+      <div class="lobulo__acao">
+        <p class="lobulo__preco">
+          <span>{lobuloplastia.preco.rotulo}</span>
+          <strong>{lobuloplastia.preco.valor}</strong>
+        </p>
+        <a class="btn btn--lg" href={ctaHref} target="_blank" rel="noopener noreferrer">
+          <Icone nome="whatsapp" class="lobulo__icone-btn" />
+          {lobuloplastia.cta}
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Continua a seção Serviços (mesmo fundo), por isso sem espaço em cima. */
+  .lobuloplastia {
+    padding-top: 0;
+  }
+
+  /* Pequeno: texto, fotos, preço e botão. Grande: fotos à direita, texto e ação à esquerda. */
+  .lobulo {
+    display: grid;
+    grid-template-areas: "texto" "fotos" "acao";
+    gap: var(--space-12);
+    padding: var(--space-10) var(--space-5);
+    border-radius: var(--radius-xl);
+  }
+
+  /* No celular, o botão cabe em uma linha. */
+  .lobulo .btn {
+    padding-inline: var(--space-6);
+  }
+
+  .lobulo__texto {
+    grid-area: texto;
+  }
+
+  .lobulo__acao {
+    grid-area: acao;
+  }
+
+  .lobulo__texto > p {
+    max-width: 30rem;
+    color: var(--color-text-muted);
+  }
+
+  .lobulo__texto > p:last-child {
+    margin-bottom: 0;
+  }
+
+  .lobulo__texto :global(.titulo-secao) {
+    margin-bottom: var(--space-5);
+  }
+
+  .lobulo__preco {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    margin: 0 0 var(--space-8);
+  }
+
+  .lobulo__preco span {
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--letter-spacing-eyebrow);
+    text-transform: uppercase;
+    color: var(--color-rose-strong);
+  }
+
+  .lobulo__preco strong {
+    font-family: var(--font-display);
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-medium);
+    font-variant-numeric: lining-nums;
+    line-height: var(--line-height-tight);
+    color: var(--color-text);
+  }
+
+  .lobulo :global(.lobulo__icone-btn) {
+    width: 1.25rem;
+  }
+
+  /* Duas polaroides inclinadas e sobrepostas, ligadas por uma seta desenhada à mão. */
+  .lobulo__fotos {
+    grid-area: fotos;
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+    max-width: 30rem;
+    margin-inline: auto;
+    padding-top: var(--space-10);
+  }
+
+  .polaroid {
+    margin: 0;
+    padding: var(--space-2) var(--space-2) 0;
+    border-radius: var(--radius-sm);
+    background: var(--color-card);
+    box-shadow: var(--shadow-md);
+    transition: transform 0.4s var(--ease-out);
+  }
+
+  .polaroid :global(img) {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    border-radius: calc(var(--radius-sm) / 2);
+  }
+
+  .polaroid figcaption {
+    padding-block: var(--space-2) var(--space-3);
+    font-family: var(--font-display);
+    font-size: var(--font-size-name);
+    font-style: italic;
+    line-height: 1;
+    text-align: center;
+    color: var(--color-text);
+  }
+
+  .polaroid--antes {
+    transform: rotate(-6deg);
+  }
+
+  .polaroid--depois {
+    z-index: 1;
+    margin-top: var(--space-12);
+    margin-left: -12%;
+    transform: rotate(5deg);
+  }
+
+  /* Só com mouse: no toque, o :hover "gruda" depois do toque. */
+  @media (hover: hover) {
+    .lobulo__fotos:hover .polaroid--antes {
+      transform: rotate(-2deg) translateX(-4%);
+    }
+
+    .lobulo__fotos:hover .polaroid--depois {
+      transform: rotate(2deg) translateX(4%);
+    }
+  }
+
+  .lobulo__seta {
+    position: absolute;
+    top: 0;
+    left: 34%;
+    width: 30%;
+    transform: rotate(25deg);
+    fill: none;
+    stroke: var(--color-rose-strong);
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .lobulo__fotos :global(.lobulo__brilho) {
+    position: absolute;
+    z-index: 2;
+    right: -4%;
+    top: 22%;
+    width: 2.25rem;
+    color: var(--color-rose);
+  }
+
+  @media (width >= 48rem) {
+    .lobulo {
+      padding: var(--space-16);
+    }
+
+    .lobulo .btn {
+      padding-inline: var(--space-8);
+    }
+  }
+
+  @media (width >= 64rem) {
+    .lobulo {
+      grid-template-columns: 1fr 1fr;
+      grid-template-areas: "texto fotos" "acao fotos";
+      gap: var(--space-8) var(--space-16);
+    }
+
+    .lobulo__texto {
+      align-self: end;
+    }
+
+    .lobulo__acao {
+      align-self: start;
+    }
+
+    .lobulo__fotos {
+      align-self: center;
+    }
+  }
+</style>

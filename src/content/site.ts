@@ -31,7 +31,6 @@ export type NomeIcone =
   | "joia"
   | "escudo"
   | "cuidado"
-  | "casa"
   | "seta";
 
 export interface Site {
@@ -70,10 +69,21 @@ export interface Site {
     eyebrow: string;
     titulo: Titulo;
     texto: string;
+    /** Menor preço da página (JSON-LD priceRange). */
     preco: string;
-    cartoes: { titulo: string; texto: string; foto: Foto; cor: Pastel }[];
+    cartoes: { titulo: string; preco: string; texto: string; foto: Foto; cor: Pastel }[];
     tiposTitulo: string;
     tipos: string[];
+  };
+  lobuloplastia: {
+    eyebrow: string;
+    titulo: Titulo;
+    texto: string[];
+    preco: { rotulo: string; valor: string };
+    cta: string;
+    mensagemWhatsapp: string;
+    antes: Foto & { legenda: string };
+    depois: Foto & { legenda: string };
   };
   diferenciais: {
     eyebrow: string;
@@ -138,11 +148,6 @@ export interface Site {
     instagram: { usuario: string; url: string };
   };
   rodape: {
-    logo: Foto;
-    frase: string;
-    contatoTitulo: string;
-    enderecoTitulo: string;
-    horarioTitulo: string;
     privacidade: string;
   };
   /** Responsável pelo negócio (controladora na LGPD). Sem CNPJ: profissional autônoma. */
@@ -166,7 +171,7 @@ export const site: Site = {
     url: "https://furodelicado.com.br",
     title: "Furo de orelha humanizado em Planaltina-DF | Furo Delicado",
     description:
-      "Furo de orelha e piercing sem dor em Planaltina-DF, para bebês a partir de 15 dias, crianças e adultos. Joia de titânio e acompanhamento inclusos.",
+      "Furo de orelha e piercing sem dor em Planaltina-DF, para bebês a partir de 15 dias, crianças e adultos. Joia e acompanhamento inclusos.",
     imagem: "luciana-5.jpg",
     tipoNegocio: "HealthAndBeautyBusiness",
     areaAtendida: "Planaltina-DF e região",
@@ -182,11 +187,11 @@ export const site: Site = {
     selo: "Furo humanizado",
     headline: { linha1: "Furo de orelha", destaque: "sem dor", sublinhado: "e seguro." },
     subheadline:
-      "Para bebês a partir de 15 dias, crianças e adultos em Planaltina-DF, com joia de titânio inclusa.",
+      "Para bebês a partir de 15 dias, crianças e adultos em Planaltina-DF, com a joia já inclusa.",
     cta: "Agendar pelo WhatsApp",
     avaliacoes: {
       nota: "5,0",
-      total: "128 avaliações no Google",
+      total: "+125 avaliações no Google",
       miniaturas: [
         { arquivo: "orelha-crianca-2.jpg", alt: "" },
         { arquivo: "orelha-adulto-2.jpg", alt: "" },
@@ -202,36 +207,42 @@ export const site: Site = {
       alt: "Recepção do Furo Delicado, com o logo iluminado em um painel em arco",
     },
     experiencia: { numero: "5+", rotulo: "anos de experiência" },
-    profissional: { nome: "Luciana de Lurdes", titulo: "Técnica em enfermagem" },
+    profissional: { nome: "Luciana de Lurdes", titulo: "Técnica e graduada em enfermagem" },
   },
   servicos: {
     eyebrow: "Serviços",
     titulo: { antes: "Um cuidado para", destaque: "cada fase" },
     texto:
-      "Do primeiro brinquinho do bebê ao terceiro furo, com joia de titânio e acompanhamento já inclusos.",
-    preco: "a partir de R$ 100",
+      "Do primeiro brinquinho do bebê ao piercing de cartilagem, com joia e acompanhamento já inclusos.",
+    preco: "a partir de R$ 100",
     cartoes: [
       {
-        titulo: "Bebês e crianças",
-        texto: "A partir de 15 dias de vida, com calma e no tempo de cada criança.",
+        titulo: "Bebês até 3 meses",
+        preco: "a partir de R$ 200",
+        texto:
+          "A partir de 15 dias de vida (não atendemos prematuros), com joia de aço folheado a ouro 24k.",
         foto: {
-          arquivo: "orelha-crianca-1.jpg",
-          alt: "Bebê de faixa branca na cabeça com um brinquinho dourado na orelha",
+          arquivo: "orelha-crianca-2.jpg",
+          alt: "Recém-nascido dormindo, com um brinquinho dourado na orelha",
         },
         cor: "peach",
       },
       {
-        titulo: "Lóbulo",
-        texto: "Primeiro, segundo e terceiro furo, para quem quer começar ou completar a orelha.",
+        titulo: "Bebês e crianças",
+        preco: "R$ 250",
+        texto:
+          "A partir de 3 meses, com joia de aço folheado a ouro 24k, com calma e no tempo de cada criança.",
         foto: {
-          arquivo: "orelha-adulto-2.jpg",
-          alt: "Orelha com dois brincos de pedra no lóbulo e um piercing de flores na cartilagem",
+          arquivo: "orelha-crianca-1.jpg",
+          alt: "Bebê de faixa branca na cabeça com um brinquinho dourado na orelha",
         },
         cor: "sage",
       },
       {
-        titulo: "Cartilagem",
-        texto: "Tragus, helix, mid-helix, conch, daith e transversal.",
+        titulo: "Adultos",
+        preco: "a partir de R$ 100",
+        texto:
+          "Orelha, nariz e mamilo. Joia de aço a partir de R$ 100 ou de titânio a partir de R$ 150.",
         foto: {
           arquivo: "orelha-adulto-1.jpg",
           alt: "Orelha com vários piercings brilhantes na cartilagem e no lóbulo",
@@ -245,20 +256,44 @@ export const site: Site = {
       "Tragus",
       "Helix",
       "Mid-helix",
+      "Flat",
+      "Rook",
       "Conch",
       "Daith",
       "Transversal",
+      "Australianos",
       "Aba nasal",
       "Mamilo",
     ],
+  },
+  lobuloplastia: {
+    eyebrow: "Lobuloplastia",
+    titulo: { antes: "Lóbulo rasgado?", destaque: "A gente corrige." },
+    texto: [
+      "A lobuloplastia corrige o lóbulo da orelha rasgado ou alargado, como acontece com o peso dos brincos.",
+      "Mande uma foto da sua orelha pelo WhatsApp e tire suas dúvidas.",
+    ],
+    preco: { rotulo: "a partir de", valor: "R$ 380" },
+    cta: "Enviar foto no WhatsApp",
+    mensagemWhatsapp: "Olá! Vim pelo site e gostaria de saber sobre a lobuloplastia.",
+    antes: {
+      arquivo: "lobuloplastia-antes.jpg",
+      alt: "Lóbulo da orelha rasgado ao meio, antes da lobuloplastia",
+      legenda: "antes",
+    },
+    depois: {
+      arquivo: "lobuloplastia-depois.jpg",
+      alt: "Lóbulo da orelha fechado depois da lobuloplastia, com um brinco de pedra",
+      legenda: "depois",
+    },
   },
   diferenciais: {
     eyebrow: "Diferenciais",
     titulo: { antes: "Por que escolher o", destaque: "Furo Delicado" },
     itens: [
       {
-        titulo: "Joia de titânio inclusa",
-        texto: "As joias são nossas e já vêm no valor. Não usamos joias trazidas de fora.",
+        titulo: "Joia inclusa no valor",
+        texto: "As joias são nossas e já vêm no preço. Não usamos joias trazidas de fora.",
         icone: "joia",
         cor: "sage",
       },
@@ -274,19 +309,13 @@ export const site: Site = {
         icone: "cuidado",
         cor: "blush",
       },
-      {
-        titulo: "Atendimento a domicílio",
-        texto: "Prefere em casa? Nós vamos até você em Planaltina-DF e região.",
-        icone: "casa",
-        cor: "lilac",
-      },
     ],
   },
   sobre: {
     eyebrow: "Sobre",
     titulo: { antes: "Cuidado de quem", destaque: "entende de gente" },
     texto: [
-      "Luciana de Lurdes é técnica em enfermagem e trabalha com perfuração há mais de 5 anos.",
+      "Técnica e graduada em enfermagem, Luciana de Lurdes trabalha com perfuração há mais de 5 anos.",
       "Cada furo é feito sem pressa, com paciência e no tempo de quem está sendo atendido, do recém-nascido ao adulto.",
     ],
     foto: {
@@ -296,13 +325,14 @@ export const site: Site = {
     selo: { numero: "5+", rotulo: "anos" },
     formacaoTitulo: "Formação",
     formacao: [
+      "Graduação em enfermagem",
       "Técnica em enfermagem",
       "Piercing Humanizado: Método Aryanne Cantarino, com habilitação em primeiro brinquinho em bebês",
       "Curso de técnica em piercings australianos",
     ],
     numeros: [
       { valor: "5,0", rotulo: "nota no Google" },
-      { valor: "128", rotulo: "avaliações" },
+      { valor: "+125", rotulo: "avaliações" },
     ],
   },
   comoFunciona: {
@@ -311,11 +341,11 @@ export const site: Site = {
     passos: [
       {
         titulo: "Chame no WhatsApp",
-        texto: "Tire suas dúvidas e combine o dia e o horário, no estúdio ou na sua casa.",
+        texto: "Tire suas dúvidas e combine o dia e o horário do seu atendimento no estúdio.",
       },
       {
         titulo: "Perfuração delicada",
-        texto: "Com joia de titânio, material esterilizado e todo o tempo que for preciso.",
+        texto: "Com a nossa joia, material esterilizado e toda biosegurança necessária.",
       },
       {
         titulo: "Acompanhamento",
@@ -326,7 +356,7 @@ export const site: Site = {
   avaliacoes: {
     eyebrow: "Avaliações",
     titulo: { antes: "Quem furou,", destaque: "recomenda" },
-    resumo: "5,0 · 128 avaliações no Google",
+    resumo: "5,0 · +125 avaliações no Google",
     linkGoogle: "Ver todas no Google",
     // Avaliações públicas do Google (avaliacoes.md), texto literal.
     depoimentos: [
@@ -349,9 +379,9 @@ export const site: Site = {
       },
       {
         texto:
-          "Maravilhosa! Atendimento em domicílio impecável, cuidadosa, atenciosa e profissional. Minha bebê ficou calma, Luciana transmite paz. Muito obrigada, amamos o mimo Deus abençoe!",
-        autor: "Daniele M.",
-        contexto: "Atendimento a domicílio",
+          "O atendimento da Luciana foi maravilhoso! Ela é muito educada, paciente e tem muito conhecimento! E o suporte após a realização do procedimento é impecável!",
+        autor: "Vanessa G.",
+        contexto: "Pós-perfuração",
       },
       {
         texto:
@@ -379,17 +409,17 @@ export const site: Site = {
       {
         pergunta: "Com quantos dias posso furar a orelha do meu bebê?",
         resposta:
-          "A partir de 15 dias de vida. O atendimento respeita o tempo do bebê: se ele estiver agitado, a gente espera ele se acalmar.",
+          "A partir de 15 dias de vida. Não atendemos bebês prematuros. O atendimento respeita o tempo do bebê: se ele estiver agitado, a gente espera ele se acalmar.",
       },
       {
         pergunta: "Quanto custa?",
         resposta:
-          "As perfurações começam em R$ 100, já com a joia de titânio e o acompanhamento pós-perfuração.",
+          "Bebês até 3 meses: a partir de R$ 200. Bebês a partir de 3 meses e crianças: R$ 250. Nos dois casos, a joia é de aço folheado a ouro 24k. Adultos: a partir de R$ 100 com joia de aço ou a partir de R$ 150 com joia de titânio. A joia e o acompanhamento pós-perfuração já estão no valor. Lobuloplastia: a partir de R$ 380.",
       },
       {
         pergunta: "Posso levar minha própria joia?",
         resposta:
-          "Não. A perfuração é feita só com as nossas joias de titânio, que já estão inclusas no valor.",
+          "Não. A perfuração é feita só com as nossas joias, que já estão inclusas no valor.",
       },
       {
         pergunta: "O material é esterilizado?",
@@ -398,11 +428,6 @@ export const site: Site = {
       {
         pergunta: "E depois do furo?",
         resposta: "Você tem acompanhamento durante a cicatrização para tirar qualquer dúvida.",
-      },
-      {
-        pergunta: "Vocês atendem em casa?",
-        resposta:
-          "Sim. Além do estúdio, há atendimento a domicílio em Planaltina-DF e região. É só combinar pelo WhatsApp.",
       },
       {
         pergunta: "Qual é o horário de atendimento?",
@@ -414,8 +439,7 @@ export const site: Site = {
   secaoContato: {
     eyebrow: "Contato",
     titulo: { antes: "Vamos marcar o seu", destaque: "furo", depois: "?" },
-    texto:
-      "Chame no WhatsApp e a gente combina o melhor horário para você, no estúdio ou na sua casa.",
+    texto: "Chame no WhatsApp e a gente combina o melhor horário para você vir ao estúdio.",
     ctaWhatsapp: "Chamar no WhatsApp",
     instagramDetalhe: "Trabalhos e dicas de cuidado",
     mapa: {
@@ -450,15 +474,10 @@ export const site: Site = {
     mapaEmbedUrl:
       "https://www.google.com/maps?q=Furo+Delicado+Piercings,+Planaltina+-+DF,+73350-305&output=embed",
     horario: ["Somente com agendamento"],
-    atendimento: "No estúdio ou a domicílio, em Planaltina-DF e região",
+    atendimento: "No estúdio, em Planaltina-DF",
     instagram: { usuario: "@furodelicado", url: "https://www.instagram.com/furodelicado/" },
   },
   rodape: {
-    logo: { arquivo: "logo-completo-claro.png", alt: "Furo Delicado: perfuração auricular segura" },
-    frase: "Furo de orelha humanizado em Planaltina-DF, para bebês, crianças e adultos.",
-    contatoTitulo: "Contato",
-    enderecoTitulo: "Endereço",
-    horarioTitulo: "Atendimento",
     privacidade: "Política de Privacidade",
   },
   empresa: {
